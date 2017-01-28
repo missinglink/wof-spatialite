@@ -43,6 +43,9 @@ CREATE INDEX IF NOT EXISTS place_id_idx ON grid(place_id);
 SELECT AddGeometryColumn('grid', 'geom', 4326, 'MULTIPOLYGON', 'XY');
 SELECT CreateSpatialIndex('grid', 'geom');
 SQL
+
+# set file permissions
+chmod 0666 "$DB";
 }
 
 ## json - print a json property from file

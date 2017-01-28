@@ -20,22 +20,22 @@ GRID_SIZE=${GRID_SIZE:-'10'}
 LON=${LON:-'-73.990373'}
 LAT=${LAT:-'40.74421'}
 
-# init db
+echo '-- init database --';
 docker run -i -v "$INDIR:/in" -v "$OUTDIR:/out" 'missinglink/wof-spatialite' init;
 
-# import wof
+echo '-- import wof --';
 time docker run -i -v "$INDIR:/in" -v "$OUTDIR:/out" 'missinglink/wof-spatialite' index_all '/in';
 
-# repair geometries
+echo '-- repair geometries --';
 time docker run -i -v "$INDIR:/in" -v "$OUTDIR:/out" 'missinglink/wof-spatialite' fixify;
 
-# simplify geometries
+echo '-- simplify geometries --';
 time docker run -i -v "$INDIR:/in" -v "$OUTDIR:/out" 'missinglink/wof-spatialite' simplify '0.1';
 
-# create grid
+echo '-- create grid --';
 time docker run -i -v "$INDIR:/in" -v "$OUTDIR:/out" 'missinglink/wof-spatialite' grid_all "$GRID_XMIN" "$GRID_YMIN" "$GRID_XMAX" "$GRID_YMAX" "$GRID_SIZE";
 
-# test
+echo '-- run point-in-polygon tests --';
 docker run -i -v "$INDIR:/in" -v "$OUTDIR:/out" 'missinglink/wof-spatialite' pip "$LON" "$LAT";
 docker run -i -v "$INDIR:/in" -v "$OUTDIR:/out" 'missinglink/wof-spatialite' pipfast "$LON" "$LAT";
 docker run -i -v "$INDIR:/in" -v "$OUTDIR:/out" 'missinglink/wof-spatialite' pipturbo "$LON" "$LAT";
