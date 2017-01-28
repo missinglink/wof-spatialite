@@ -11,7 +11,7 @@ RUN mkdir -p /usr/src/repos/wof-spatialite
 WORKDIR /usr/src/repos/wof-spatialite
 
 # copy source code
-COPY . /usr/src/repos/wof-spatialite
+COPY ./spatialite.sh /usr/src/repos/wof-spatialite
 
 # data dirs
 VOLUME "/in"

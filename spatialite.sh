@@ -122,7 +122,10 @@ SQL
 ## grid - create a grid cutout for a 1deg x 1deg section
 ## $1: minLat: eg. '-180'
 ## $2: minLon: eg. '-90'
+## $3: size: eg. '1'
 function grid(){
+echo 'grid' "$1" "$2" "($1+$3)" "($2+$3)";
+
 sqlite3 "$DB" <<SQL
 PRAGMA foreign_keys=OFF;
 PRAGMA page_size=4096;
@@ -133,13 +136,13 @@ PRAGMA temp_store=MEMORY;
 SELECT load_extension('mod_spatialite');
 
 INSERT INTO grid (id, place_id, geom)
-SELECT NULL, id, CastToMultiPolygon(Intersection(geom, BuildMbr($1, $2, ($1+1), ($2+1), 4326)))
+SELECT NULL, id, CastToMultiPolygon(Intersection(geom, BuildMbr($1, $2, ($1+$3), ($2+$3), 4326)))
 FROM place
 WHERE id IN (
   SELECT id FROM idx_place_geom
-  WHERE xmin<=($1+1)
+  WHERE xmin<=($1+$3)
   AND xmax>=$1
-  AND ymin<=($2+1)
+  AND ymin<=($2+$3)
   AND ymax>=$2
 )
 AND place.geom IS NOT NULL;
@@ -151,11 +154,11 @@ SQL
 ## $2: minLon: eg. '-90'
 ## $3: maxLat: eg. '179'
 ## $4: maxLon: eg. '89'
+## $5: size: eg. '1'
 function grid_all(){
-  for x in $(seq "$1" "$3"); do
-    for y in $(seq "$2" "$4"); do
-      echo "$x" "$y";
-      grid "$x" "$y";
+  for x in $(seq "$1" "$5" "$3"); do
+    for y in $(seq "$2" "$5" "$4"); do
+      grid "$x" "$y" "$5";
     done
   done
 }
@@ -291,7 +294,7 @@ case "$1" in
 'fixify') fixify;;
 'simplify') simplify "$2";;
 'grid') grid "$2" "$3";;
-'grid_all') grid_all "$2" "$3" "$4" "$5";;
+'grid_all') grid_all "$2" "$3" "$4" "$5" "$6";;
 'pip') pip "$2" "$3";;
 'pipfast') pipfast "$2" "$3";;
 'pipturbo') pipturbo "$2" "$3";;

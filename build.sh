@@ -10,10 +10,11 @@ mkdir -p "$OUTDIR";
 rm -rf "$OUTDIR/wof.sqlite3";
 
 # grid extent
-XMIN=${XMIN:-'-180'}
-YMIN=${YMIN:-'-90'}
-XMAX=${XMAX:-'179'}
-YMAX=${YMAX:-'89'}
+GRID_XMIN=${GRID_XMIN:-'-180'}
+GRID_YMIN=${GRID_YMIN:-'-90'}
+GRID_XMAX=${GRID_XMAX:-'170'}
+GRID_YMAX=${GRID_YMAX:-'80'}
+GRID_SIZE=${GRID_SIZE:-'10'}
 
 # test coords
 LON=${LON:-'-73.990373'}
@@ -25,8 +26,14 @@ docker run -i -v "$INDIR:/in" -v "$OUTDIR:/out" 'missinglink/wof-spatialite' ini
 # import wof
 time docker run -i -v "$INDIR:/in" -v "$OUTDIR:/out" 'missinglink/wof-spatialite' index_all '/in';
 
+# repair geometries
+time docker run -i -v "$INDIR:/in" -v "$OUTDIR:/out" 'missinglink/wof-spatialite' fixify;
+
+# simplify geometries
+time docker run -i -v "$INDIR:/in" -v "$OUTDIR:/out" 'missinglink/wof-spatialite' simplify '0.1';
+
 # create grid
-time docker run -i -v "$INDIR:/in" -v "$OUTDIR:/out" 'missinglink/wof-spatialite' grid_all "$XMIN" "$YMIN" "$XMAX" "$YMAX";
+time docker run -i -v "$INDIR:/in" -v "$OUTDIR:/out" 'missinglink/wof-spatialite' grid_all "$GRID_XMIN" "$GRID_YMIN" "$GRID_XMAX" "$GRID_YMAX" "$GRID_SIZE";
 
 # test
 docker run -i -v "$INDIR:/in" -v "$OUTDIR:/out" 'missinglink/wof-spatialite' pip "$LON" "$LAT";
