@@ -10,9 +10,6 @@ ENV LD_LIBRARY_PATH=/lib:/usr/lib:/usr/local/lib;
 RUN mkdir -p /usr/src/repos/wof-spatialite
 WORKDIR /usr/src/repos/wof-spatialite
 
-# copy source code
-COPY ./spatialite.sh /usr/src/repos/wof-spatialite
-
 # data dirs
 VOLUME "/in"
 VOLUME "/out"
@@ -22,3 +19,6 @@ ENV OUTDIR "/out"
 # set entry point
 WORKDIR /usr/src/repos/wof-spatialite
 ENTRYPOINT [ "./spatialite.sh" ]
+
+# copy source code
+COPY ./spatialite.sh /usr/src/repos/wof-spatialite

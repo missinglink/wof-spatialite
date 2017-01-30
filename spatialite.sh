@@ -139,16 +139,13 @@ PRAGMA temp_store=MEMORY;
 SELECT load_extension('mod_spatialite');
 
 INSERT INTO grid (id, place_id, geom)
-SELECT NULL, id, CastToMultiPolygon(Intersection(geom, BuildMbr($1, $2, ($1+$3), ($2+$3), 4326)))
+SELECT NULL, id, CastToMultiPolygon(Intersection(geom, BuildMbr($1, $2, ($1+$3), ($2+$3), 4326))) as piece
 FROM place
 WHERE id IN (
-  SELECT id FROM idx_place_geom
-  WHERE xmin<=($1+$3)
-  AND xmax>=$1
-  AND ymin<=($2+$3)
-  AND ymax>=$2
+  SELECT pkid FROM idx_place_geom
+  WHERE pkid MATCH RTreeIntersects( $1, $2, $1+$3, $2+$3 )
 )
-AND place.geom IS NOT NULL;
+AND piece IS NOT NULL;
 SQL
 }
 
@@ -159,8 +156,8 @@ SQL
 ## $4: maxLon: eg. '89'
 ## $5: size: eg. '1'
 function grid_all(){
-  for x in $(seq "$1" "$5" "$3"); do
-    for y in $(seq "$2" "$5" "$4"); do
+  for y in $(seq "$2" "$5" "$4"); do
+    for x in $(seq "$1" "$5" "$3"); do
       grid "$x" "$y" "$5";
     done
   done
@@ -175,7 +172,7 @@ SELECT load_extension('mod_spatialite');
 .timer on
 
 SELECT * FROM place
-WHERE within( GeomFromText('POINT( $1 $2 )', 4326 ), geom );
+WHERE within( MakePoint( $1, $2, 4326 ), geom );
 SQL
 }
 
@@ -190,12 +187,9 @@ SELECT load_extension('mod_spatialite');
 SELECT * FROM place
 WHERE id IN (
   SELECT pkid FROM idx_place_geom
-  WHERE xmin<=$1
-    AND xmax>=$1
-    AND ymin<=$2
-    AND ymax>=$2
+  WHERE pkid MATCH RTreeIntersects( $1, $2, $1, $2 )
 )
-AND within( GeomFromText('POINT( $1 $2 )', 4326 ), geom );
+AND within( MakePoint( $1, $2, 4326 ), geom );
 SQL
 }
 
@@ -210,7 +204,11 @@ SELECT load_extension('mod_spatialite');
 SELECT * FROM place
 WHERE id IN (
   SELECT place_id FROM grid
-  WHERE Intersects( geom, MakePoint( $1, $2, 4326 ) )
+  WHERE id IN (
+    SELECT pkid FROM idx_grid_geom
+    WHERE pkid MATCH RTreeIntersects( $1, $2, $1, $2 )
+  )
+  AND Intersects( grid.geom, MakePoint( $1, $2, 4326 ) )
 );
 SQL
 }
@@ -287,6 +285,24 @@ AND (
 );
 SQL
 }
+
+# copy all records enveloping point
+# time sqlite3 $"$OUTDIR/wof.sqlite3" <<SQL
+# SELECT load_extension('mod_spatialite');
+# .timer on
+#
+# ATTACH DATABASE '/media/flash/wof.sqlite3.backup' as 'source';
+#
+# INSERT INTO main.place SELECT * FROM source.place
+# WHERE id IN (
+#   SELECT pkid FROM source.idx_place_geom
+#   WHERE xmin<=$LON
+#     AND xmax>=$LON
+#     AND ymin<=$LAT
+#     AND ymax>=$LAT
+# );
+#
+# DETACH DATABASE 'source';
 
 # cli runner
 case "$1" in
