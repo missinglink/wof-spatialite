@@ -34,10 +34,16 @@ CREATE INDEX IF NOT EXISTS layer_idx ON place(layer);
 SELECT AddGeometryColumn('place', 'geom', 4326, 'GEOMETRY', 'XY', 1);
 SELECT CreateSpatialIndex('place', 'geom');
 
+CREATE TABLE IF NOT EXISTS properties (
+  place_id INTEGER PRIMARY KEY NOT NULL,
+  blob TEXT,
+  CONSTRAINT fk_place FOREIGN KEY (place_id) REFERENCES place(id)
+);
+
 CREATE TABLE grid (
  id INTEGER PRIMARY KEY AUTOINCREMENT,
  place_id INTEGER NOT NULL,
- CONSTRAINT fk_place FOREIGN KEY (place_id) REFERENCES place (id)
+ CONSTRAINT fk_place FOREIGN KEY (place_id) REFERENCES place(id)
 );
 CREATE INDEX IF NOT EXISTS place_id_idx ON grid(place_id);
 SELECT AddGeometryColumn('grid', 'geom', 4326, 'MULTIPOLYGON', 'XY');
@@ -72,7 +78,11 @@ PRAGMA journal_mode=OFF;
 PRAGMA temp_store=MEMORY;
 
 SELECT load_extension('mod_spatialite');
-WITH file AS ( SELECT readfile('$1') AS json )
+BEGIN;
+
+CREATE TEMP TABLE file ( json TEXT );
+INSERT INTO file SELECT readfile('$1') AS json;
+
 INSERT INTO place ( id, name, layer, geom )
 VALUES (
   json_extract(( SELECT json FROM file ), '$.properties."wof:id"'),
@@ -80,6 +90,15 @@ VALUES (
   json_extract(( SELECT json FROM file ), '$.properties."wof:placetype"'),
   SetSRID( GeomFromGeoJSON( json_extract(( SELECT json FROM file ), '$.geometry') ), 4326 )
 );
+
+INSERT INTO properties ( place_id, blob )
+VALUES (
+  json_extract(( SELECT json FROM file ), '$.properties."wof:id"'),
+  json_extract(( SELECT json FROM file ), '$.properties')
+);
+
+DROP TABLE file;
+COMMIT;
 SQL
 }
 
