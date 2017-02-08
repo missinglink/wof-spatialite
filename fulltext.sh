@@ -79,6 +79,13 @@ FROM source.properties
 WHERE name IS NOT NULL;
 
 INSERT INTO place_name SELECT
+  json_extract( blob, '$.wof:abbreviation' ) as name,
+  'abbr' as key,
+  place_id as wofid
+FROM source.properties
+WHERE name IS NOT NULL;
+
+INSERT INTO place_name SELECT
   json_extract( blob, '$.name:chi_x_preferred[0]' ) as name,
   'chi' as key,
   place_id as wofid
@@ -149,6 +156,20 @@ FROM source.properties
 WHERE name IS NOT NULL;
 
 COMMIT;
+SQL
+}
+
+## create vocab tables
+function vocab(){
+  sqlite3 "$DB" <<SQL
+PRAGMA foreign_keys=OFF;
+PRAGMA page_size=4096;
+PRAGMA cache_size=-2000;
+PRAGMA synchronous=OFF;
+PRAGMA journal_mode=OFF;
+PRAGMA temp_store=MEMORY;
+
+CREATE VIRTUAL TABLE vocab USING fts5vocab( place_name, col );
 SQL
 }
 
