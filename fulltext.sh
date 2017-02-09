@@ -10,6 +10,7 @@ DB=${DB:-"$DIR/fts.sqlite3"};
 
 # location of admin source database file
 SOURCE=${SOURCE:-"/data/wof-spatialite/wof.admin.sqlite3"};
+# SOURCE=${SOURCE:-"/media/flash/wof.sqlite3"};
 
 # note: requires libspatialite to be compiled with librttopo
 export LD_LIBRARY_PATH=/lib:/usr/lib:/usr/local/lib;
@@ -30,10 +31,22 @@ CREATE INDEX IF NOT EXISTS iso_idx ON place(iso);
 DROP TABLE IF EXISTS place_name;
 CREATE VIRTUAL TABLE place_name USING fts5 (
   name,
-  key UNINDEXED,
+  lang UNINDEXED,
   wofid UNINDEXED,
   prefix='1 2 3 4 5 6 7 8 9 10'
 );
+
+DROP TABLE IF EXISTS graph;
+CREATE TABLE graph (
+  child_type TEXT,
+  child INTEGER NOT NULL,
+  parent_type TEXT,
+  parent INTEGER NOT NULL
+);
+CREATE INDEX IF NOT EXISTS graph_child_type_idx ON graph(child_type);
+CREATE INDEX IF NOT EXISTS graph_child_idx ON graph(child);
+CREATE INDEX IF NOT EXISTS graph_parent_type_idx ON graph(parent_type);
+CREATE INDEX IF NOT EXISTS graph_parent_idx ON graph(parent);
 SQL
 }
 
@@ -73,87 +86,197 @@ BEGIN;
 
 INSERT INTO place_name SELECT
   json_extract( blob, '$.wof:name' ) as name,
-  'default' as key,
+  'default' as lang,
   place_id as wofid
 FROM source.properties
 WHERE name IS NOT NULL;
 
 INSERT INTO place_name SELECT
   json_extract( blob, '$.wof:abbreviation' ) as name,
-  'abbr' as key,
+  'abbr' as lang,
+  place_id as wofid
+FROM source.properties
+WHERE name IS NOT NULL;
+
+INSERT INTO place_name SELECT
+  json_extract( blob, '$.ne:abbrev' ) as name,
+  'abbr2' as lang,
+  place_id as wofid
+FROM source.properties
+WHERE name IS NOT NULL;
+
+INSERT INTO place_name SELECT
+  json_extract( blob, '$.wof:country_alpha3' ) as name,
+  'alpha3' as lang,
+  place_id as wofid
+FROM source.properties
+WHERE name IS NOT NULL;
+
+INSERT INTO place_name SELECT
+  json_extract( blob, '$.wof:country' ) as name,
+  'alpha2' as lang,
   place_id as wofid
 FROM source.properties
 WHERE name IS NOT NULL;
 
 INSERT INTO place_name SELECT
   json_extract( blob, '$.name:chi_x_preferred[0]' ) as name,
-  'chi' as key,
+  'chi' as lang,
   place_id as wofid
 FROM source.properties
 WHERE name IS NOT NULL;
 
 INSERT INTO place_name SELECT
   json_extract( blob, '$.name:spa_x_preferred[0]' ) as name,
-  'spa' as key,
+  'spa' as lang,
   place_id as wofid
 FROM source.properties
 WHERE name IS NOT NULL;
 
 INSERT INTO place_name SELECT
   json_extract( blob, '$.name:eng_x_preferred[0]' ) as name,
-  'eng' as key,
+  'eng' as lang,
   place_id as wofid
 FROM source.properties
 WHERE name IS NOT NULL;
 
 INSERT INTO place_name SELECT
   json_extract( blob, '$.name:hin_x_preferred[0]' ) as name,
-  'hin' as key,
+  'hin' as lang,
   place_id as wofid
 FROM source.properties
 WHERE name IS NOT NULL;
 
 INSERT INTO place_name SELECT
   json_extract( blob, '$.name:ara_x_preferred[0]' ) as name,
-  'ara' as key,
+  'ara' as lang,
   place_id as wofid
 FROM source.properties
 WHERE name IS NOT NULL;
 
 INSERT INTO place_name SELECT
   json_extract( blob, '$.name:por_x_preferred[0]' ) as name,
-  'por' as key,
+  'por' as lang,
   place_id as wofid
 FROM source.properties
 WHERE name IS NOT NULL;
 
 INSERT INTO place_name SELECT
   json_extract( blob, '$.name:ben_x_preferred[0]' ) as name,
-  'ben' as key,
+  'ben' as lang,
   place_id as wofid
 FROM source.properties
 WHERE name IS NOT NULL;
 
 INSERT INTO place_name SELECT
   json_extract( blob, '$.name:rus_x_preferred[0]' ) as name,
-  'rus' as key,
+  'rus' as lang,
   place_id as wofid
 FROM source.properties
 WHERE name IS NOT NULL;
 
 INSERT INTO place_name SELECT
   json_extract( blob, '$.name:jpn_x_preferred[0]' ) as name,
-  'jpn' as key,
+  'jpn' as lang,
   place_id as wofid
 FROM source.properties
 WHERE name IS NOT NULL;
 
 INSERT INTO place_name SELECT
   json_extract( blob, '$.name:kor_x_preferred[0]' ) as name,
-  'kor' as key,
+  'kor' as lang,
   place_id as wofid
 FROM source.properties
 WHERE name IS NOT NULL;
+
+COMMIT;
+SQL
+}
+
+## index child->parent graph
+function index_graph(){
+  sqlite3 "$DB" <<SQL
+PRAGMA foreign_keys=OFF;
+PRAGMA page_size=4096;
+PRAGMA cache_size=-2000;
+PRAGMA synchronous=OFF;
+PRAGMA journal_mode=OFF;
+PRAGMA temp_store=MEMORY;
+
+ATTACH DATABASE '$SOURCE' as 'source';
+BEGIN;
+
+INSERT INTO graph SELECT
+  json_extract( blob, '$.wof:placetype' ) as child_type,
+  json_extract( blob, '$.wof:id' ) as child,
+  'self' as parent_type,
+  json_extract( blob, '$.wof:id' ) as parent
+FROM source.properties
+WHERE parent IS NOT NULL;
+
+INSERT INTO graph SELECT
+  json_extract( blob, '$.wof:placetype' ) as child_type,
+  json_extract( blob, '$.wof:id' ) as child,
+  'continent' as parent_type,
+  json_extract( blob, '$.wof:hierarchy[0].continent_id' ) as parent
+FROM source.properties
+WHERE parent IS NOT NULL;
+
+INSERT INTO graph SELECT
+  json_extract( blob, '$.wof:placetype' ) as child_type,
+  json_extract( blob, '$.wof:id' ) as child,
+  'country' as parent_type,
+  json_extract( blob, '$.wof:hierarchy[0].country_id' ) as parent
+FROM source.properties
+WHERE parent IS NOT NULL;
+
+INSERT INTO graph SELECT
+  json_extract( blob, '$.wof:placetype' ) as child_type,
+  json_extract( blob, '$.wof:id' ) as child,
+  'localadmin' as parent_type,
+  json_extract( blob, '$.wof:hierarchy[0].localadmin_id' ) as parent
+FROM source.properties
+WHERE parent IS NOT NULL;
+
+INSERT INTO graph SELECT
+  json_extract( blob, '$.wof:placetype' ) as child_type,
+  json_extract( blob, '$.wof:id' ) as child,
+  'locality' as parent_type,
+  json_extract( blob, '$.wof:hierarchy[0].locality_id' ) as parent
+FROM source.properties
+WHERE parent IS NOT NULL;
+
+INSERT INTO graph SELECT
+  json_extract( blob, '$.wof:placetype' ) as child_type,
+  json_extract( blob, '$.wof:id' ) as child,
+  'macroregion' as parent_type,
+  json_extract( blob, '$.wof:hierarchy[0].macroregion_id' ) as parent
+FROM source.properties
+WHERE parent IS NOT NULL;
+
+INSERT INTO graph SELECT
+  json_extract( blob, '$.wof:placetype' ) as child_type,
+  json_extract( blob, '$.wof:id' ) as child,
+  'region' as parent_type,
+  json_extract( blob, '$.wof:hierarchy[0].region_id' ) as parent
+FROM source.properties
+WHERE parent IS NOT NULL;
+
+INSERT INTO graph SELECT
+  json_extract( blob, '$.wof:placetype' ) as child_type,
+  json_extract( blob, '$.wof:id' ) as child,
+  'county' as parent_type,
+  json_extract( blob, '$.wof:hierarchy[0].county_id' ) as parent
+FROM source.properties
+WHERE parent IS NOT NULL;
+
+INSERT INTO graph SELECT
+  json_extract( blob, '$.wof:placetype' ) as child_type,
+  json_extract( blob, '$.wof:id' ) as child,
+  'neighbourhood' as parent_type,
+  json_extract( blob, '$.wof:hierarchy[0].neighbourhood_id' ) as parent
+FROM source.properties
+WHERE parent IS NOT NULL;
 
 COMMIT;
 SQL
@@ -184,6 +307,12 @@ index;
 
 echo 'index_names';
 index_names;
+
+echo 'index_graph';
+index_graph;
+
+echo 'vocab';
+vocab;
 
 echo 'table counts';
 sqlite3 "$DB" "SELECT count(*) FROM place";
