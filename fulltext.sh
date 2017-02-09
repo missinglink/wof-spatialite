@@ -189,6 +189,13 @@ INSERT INTO place_name SELECT
 FROM source.properties
 WHERE name IS NOT NULL;
 
+INSERT INTO place_name SELECT
+  json_extract( blob, '$.name:ger_x_preferred[0]' ) as name,
+  'ger' as lang,
+  place_id as wofid
+FROM source.properties
+WHERE name IS NOT NULL;
+
 COMMIT;
 SQL
 }

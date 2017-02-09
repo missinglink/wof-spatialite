@@ -26,9 +26,13 @@ function search(){
      terms[i]=${terms[i]//\"};
   done
 
-  printf 'term: %s\n' "${terms[@]}"
+  echo '';
+  printf 'term: \e[1;34m%s\e[m\n' "${terms[@]}";
+  echo '';
 
 read -r -d '' SQL <<SNIPPET
+  .timer ON
+
   SELECT place.*, place_name.lang, place_name.name FROM place
   JOIN place_name ON place.wofid = place_name.wofid AND place_name.lang = 'default'
   WHERE place.wofid IN (
