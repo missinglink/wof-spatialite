@@ -26,6 +26,9 @@ function search(){
      terms[i]=${terms[i]//\"};
   done
 
+  # autocomplete mode
+  terms[i]="${terms[i]}*";
+
   echo '';
   printf 'term: \e[1;34m%s\e[m\n' "${terms[@]}";
   echo '';
@@ -42,14 +45,9 @@ SNIPPET
   for (( i=${#terms[@]}-1 ; i>=0 ; i-- ))
   do
     if [ $i -eq 0 ]; then
-      SQL=$"$SQL SELECT wofid FROM place_name WHERE place_name MATCH \"${terms[i]}\"";
-    elif [ $i -eq $((length-1)) ]; then
-      SQL=$"$SQL SELECT graph.child FROM place_name";
-      SQL=$"$SQL JOIN graph ON place_name.wofid = graph.parent";
-      SQL=$"$SQL WHERE place_name MATCH \"${terms[i]}*\"";
-      SQL=$"$SQL INTERSECT";
+      SQL=$"$SQL SELECT DISTINCT wofid FROM place_name WHERE place_name MATCH \"${terms[i]}\"";
     else
-      SQL=$"$SQL SELECT graph.child FROM place_name";
+      SQL=$"$SQL SELECT DISTINCT graph.child FROM place_name";
       SQL=$"$SQL JOIN graph ON place_name.wofid = graph.parent";
       SQL=$"$SQL WHERE place_name MATCH \"${terms[i]}\"";
       SQL=$"$SQL INTERSECT";
@@ -58,7 +56,7 @@ SNIPPET
 
   SQL=$"$SQL ) ORDER BY area DESC;";
 
-  sqlite3 -header -column "$DB" <<< "$SQL";
+  sqlite3 -echo -header -column "$DB" <<< "$SQL";
 
 #   sqlite3 "$DB" <<SQL
 # .timer ON
