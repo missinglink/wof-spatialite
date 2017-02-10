@@ -27,7 +27,7 @@ function search(){
   done
 
   # autocomplete mode
-  terms[i]="${terms[i]}*";
+  # terms[i]="${terms[i]}*";
 
   echo '';
   printf 'term: \e[1;34m%s\e[m\n' "${terms[@]}";
@@ -36,8 +36,9 @@ function search(){
 read -r -d '' SQL <<SNIPPET
   .timer ON
 
-  SELECT place.*, place_name.lang, place_name.name FROM place
-  JOIN place_name ON place.wofid = place_name.wofid AND place_name.lang = 'default'
+  SELECT place.wofid, place_name.lang, place_name.name FROM place
+  JOIN name_map ON place_name.rowid = name_map.rowid
+  JOIN place_name ON place.wofid = name_map.wofid AND place_name.lang = 'default'
   WHERE place.wofid IN (
 SNIPPET
 
@@ -45,16 +46,17 @@ SNIPPET
   for (( i=${#terms[@]}-1 ; i>=0 ; i-- ))
   do
     if [ $i -eq 0 ]; then
-      SQL=$"$SQL SELECT DISTINCT wofid FROM place_name WHERE place_name MATCH \"${terms[i]}\"";
+      SQL=$"$SQL SELECT wofid FROM place_name WHERE place_name = 'name: \"${terms[i]}\"'";
     else
-      SQL=$"$SQL SELECT DISTINCT graph.child FROM place_name";
-      SQL=$"$SQL JOIN graph ON place_name.wofid = graph.parent";
-      SQL=$"$SQL WHERE place_name MATCH \"${terms[i]}\"";
+      SQL=$"$SQL SELECT graph.child FROM place_name";
+      SQL=$"$SQL JOIN name_map ON place_name.rowid = name_map.rowid";
+      SQL=$"$SQL JOIN graph ON name_map.wofid = graph.parent";
+      SQL=$"$SQL WHERE place_name = 'name: \"${terms[i]}\"'";
       SQL=$"$SQL INTERSECT";
     fi
   done
 
-  SQL=$"$SQL ) ORDER BY area DESC;";
+  SQL=$"$SQL ) GROUP BY place.wofid ORDER BY area DESC;";
 
   sqlite3 -echo -header -column "$DB" <<< "$SQL";
 

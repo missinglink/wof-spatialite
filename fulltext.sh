@@ -9,8 +9,8 @@ DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd );
 DB=${DB:-"$DIR/fts.sqlite3"};
 
 # location of admin source database file
-SOURCE=${SOURCE:-"/data/wof-spatialite/wof.admin.sqlite3"};
-# SOURCE=${SOURCE:-"/media/flash/wof.sqlite3"};
+# SOURCE=${SOURCE:-"/data/wof-spatialite/wof.admin.sqlite3"};
+SOURCE=${SOURCE:-"/media/flash/wof.sqlite3"};
 
 # note: requires libspatialite to be compiled with librttopo
 export LD_LIBRARY_PATH=/lib:/usr/lib:/usr/local/lib;
@@ -26,15 +26,27 @@ CREATE TABLE place (
   area REAL
 );
 CREATE INDEX IF NOT EXISTS wofid_idx ON place(wofid);
+CREATE INDEX IF NOT EXISTS placetype_idx ON place(placetype);
 CREATE INDEX IF NOT EXISTS iso_idx ON place(iso);
+CREATE INDEX IF NOT EXISTS area_idx ON place(area);
 
 DROP TABLE IF EXISTS place_name;
 CREATE VIRTUAL TABLE place_name USING fts5 (
   name,
   lang UNINDEXED,
   wofid UNINDEXED,
-  prefix='1 2 3 4 5 6 7 8 9 10'
+  prefix='1 2 3 4 5 6 7 8 9 10 11 12 13 14 15',
+  tokenize = "unicode61 tokenchars '-_ '"
 );
+
+DROP TABLE IF EXISTS name_map;
+CREATE TABLE name_map (
+  rowid INTEGER NOT NULL PRIMARY KEY,
+  wofid INTEGER NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS name_map_rowid_idx ON name_map(rowid);
+CREATE INDEX IF NOT EXISTS name_map_wofid_idx ON name_map(wofid);
 
 DROP TABLE IF EXISTS graph;
 CREATE TABLE graph (
@@ -110,14 +122,16 @@ INSERT INTO place_name SELECT
   'alpha3' as lang,
   place_id as wofid
 FROM source.properties
-WHERE name IS NOT NULL;
+WHERE json_extract( blob, '$.wof:placetype' ) = 'country'
+AND name IS NOT NULL;
 
 INSERT INTO place_name SELECT
   json_extract( blob, '$.wof:country' ) as name,
   'alpha2' as lang,
   place_id as wofid
 FROM source.properties
-WHERE name IS NOT NULL;
+WHERE json_extract( blob, '$.wof:placetype' ) = 'country'
+AND name IS NOT NULL;
 
 INSERT INTO place_name SELECT
   json_extract( blob, '$.name:chi_x_preferred[0]' ) as name,
@@ -197,6 +211,8 @@ FROM source.properties
 WHERE name IS NOT NULL;
 
 COMMIT;
+
+INSERT INTO name_map SELECT rowid, wofid FROM place_name;
 SQL
 }
 
@@ -332,3 +348,6 @@ sqlite3 "$DB" 'SELECT * FROM place_name WHERE place_name MATCH "londres" GROUP B
 
 echo 'search'
 sqlite3 "$DB" 'SELECT * FROM place JOIN place_name ON place.wofid = place_name.wofid WHERE place_name MATCH "lond*" GROUP BY place.wofid ORDER BY place.area DESC;';
+
+echo 'top 10 terms in index'
+sqlite3 "$DB"  "SELECT * FROM vocab ORDER BY doc DESC LIMIT 10";
