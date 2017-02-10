@@ -36,7 +36,7 @@ function search(){
 read -r -d '' SQL <<SNIPPET
   .timer ON
 
-  SELECT place.wofid, place_name.lang, place_name.name FROM place
+  SELECT place.*, place_name.lang, place_name.name FROM place
   JOIN name_map ON place_name.rowid = name_map.rowid
   JOIN place_name ON place.wofid = name_map.wofid AND place_name.lang = 'default'
   WHERE place.wofid IN (
