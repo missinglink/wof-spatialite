@@ -1,0 +1,25 @@
+{
+  "name": "wof-spatialite",
+  "version": "1.0.0",
+  "description": "docker container to load [whosonfirst](https://github.com/whosonfirst-data/whosonfirst-data) in to spatialite.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/missinglink/wof-spatialite.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/missinglink/wof-spatialite/issues"
+  },
+  "homepage": "https://github.com/missinglink/wof-spatialite#readme",
+  "dependencies": {
+    "express": "^4.14.1",
+    "serve-index": "^1.8.0",
+    "sqlite3": "^3.1.8"
+  }
+}
