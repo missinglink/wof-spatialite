@@ -9,8 +9,8 @@ DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd );
 DB=${DB:-"$DIR/fts.sqlite3"};
 
 # location of admin source database file
-# SOURCE=${SOURCE:-"/data/wof-spatialite/wof.admin.sqlite3"};
-SOURCE=${SOURCE:-"/media/flash/wof.sqlite3"};
+SOURCE=${SOURCE:-"/data/wof-spatialite/wof.admin.sqlite3"};
+# SOURCE=${SOURCE:-"/media/flash/wof.sqlite3"};
 
 # note: requires libspatialite to be compiled with librttopo
 export LD_LIBRARY_PATH=/lib:/usr/lib:/usr/local/lib;
@@ -23,7 +23,8 @@ CREATE TABLE place (
   wofid INTEGER NOT NULL PRIMARY KEY,
   placetype TEXT NOT NULL,
   iso TEXT NOT NULL,
-  area REAL
+  area REAL,
+  lineage TEXT
 );
 CREATE INDEX IF NOT EXISTS wofid_idx ON place(wofid);
 CREATE INDEX IF NOT EXISTS placetype_idx ON place(placetype);
@@ -78,7 +79,8 @@ INSERT INTO place SELECT
   json_extract( blob, '$.wof:id' ) as wofid,
   json_extract( blob, '$.wof:placetype' ) as placetype,
   json_extract( blob, '$.iso:country' ) as iso,
-  json_extract( blob, '$.geom:area' ) as area
+  json_extract( blob, '$.geom:area' ) as area,
+  json_extract( blob, '$.wof:hierarchy[0]' ) as lineage
 FROM source.properties;
 SQL
 }

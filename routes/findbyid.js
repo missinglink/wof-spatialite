@@ -42,6 +42,9 @@ module.exports = function( req, res ){
       delete row.name;
       delete row.lang;
 
+      // parse JSON
+      row.lineage = JSON.parse( row.lineage );
+
       if( !memo.hasOwnProperty( row.wofid ) ){
         memo[row.wofid] = row;
         memo[row.wofid].names = {};
