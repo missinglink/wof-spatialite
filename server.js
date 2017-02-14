@@ -13,7 +13,8 @@ var routes = {
   tokeninfo: require( './routes/tokeninfo' ),
   group: require( './routes/group' ),
   tokenize: require( './routes/tokenize' ),
-  parse: require( './routes/parse' )
+  parse: require( './routes/parse' ),
+  lineage: require( './routes/lineage' )
 };
 
 //
@@ -23,6 +24,7 @@ app.get( '/parser/tokeninfo', routes.tokeninfo );
 app.get( '/parser/group', routes.group );
 app.get( '/parser/tokenize', routes.tokenize );
 app.get( '/parser/parse', routes.parse );
+app.get( '/parser/lineage/:id', routes.lineage );
 
 // root page
 app.use('/', express.static( __dirname ));

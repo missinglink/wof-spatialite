@@ -10,6 +10,9 @@ var removeTokens = [
 
 module.exports = function( db, text, cb ){
 
+  // handle non-string value
+  text = text || '';
+
   // remove address components
   text = text.replace(/^(.* (street|road|avenue|rd|st|ave) )/, '');
 
