@@ -3,6 +3,9 @@ var vocab = require('./vocab');
 var tokenize = require('../routes/_tokenize');
 var group = require('../routes/_group');
 
+var lowercase = require('lower-case');
+var removeAccents = require('remove-accents');
+
 // remove tokens which shouldn't be on their own
 var removeTokens = [
   'west', 'east', 'north', 'south'
@@ -12,6 +15,10 @@ module.exports = function( db, text, cb ){
 
   // handle non-string value
   text = text || '';
+
+  // analysis
+  text = lowercase( text );
+  text = removeAccents( text );
 
   // remove address components
   text = text.replace(/^(.* (street|road|avenue|rd|st|ave) )/, '');

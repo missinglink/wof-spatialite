@@ -10,19 +10,19 @@ var app = express();
 var routes = {
   findbyid: require( './routes/findbyid' ),
   search: require( './routes/search' ),
-  tokeninfo: require( './routes/tokeninfo' ),
-  group: require( './routes/group' ),
+  // tokeninfo: require( './routes/tokeninfo' ),
+  // group: require( './routes/group' ),
   tokenize: require( './routes/tokenize' ),
-  parse: require( './routes/parse' )
+  // parse: require( './routes/parse' )
 };
 
 //
 app.get( '/parser/findbyid', routes.findbyid );
 app.get( '/parser/search', routes.search );
-app.get( '/parser/tokeninfo', routes.tokeninfo );
-app.get( '/parser/group', routes.group );
+// app.get( '/parser/tokeninfo', routes.tokeninfo );
+// app.get( '/parser/group', routes.group );
 app.get( '/parser/tokenize', routes.tokenize );
-app.get( '/parser/parse', routes.parse );
+// app.get( '/parser/parse', routes.parse );
 
 // demo page
 app.use('/demo', express.static( __dirname + '/demo' ));

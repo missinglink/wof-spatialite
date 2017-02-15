@@ -7,9 +7,17 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/async/2.1.4/async.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 
     <style>
       .wofinfo {
+        margin: 0;
+        padding: 0;
+        display: inline-block;
+      }
+      #tokens {
+        margin: 0;
+        padding: 0;
         display: inline-block;
       }
       .wofinfo a {
@@ -26,85 +34,114 @@
     </style>
 
     <script>
-      function search( text ){
+      function query( text ){
+        var documents = {};
         console.info( 'search', text );
 
-        var findids = {};
-        var alldocs = {};
+        tokenize( text, function( tokens ){
+          console.log( 'tokens', tokens );
 
-        parse( text, function( answers ){
+          search( tokens, function( answers ){
 
-          answers.forEach( function( answer ){
-            findids[ answer.wofid ] = true;
-          });
-
-          findbyid( Object.keys( findids ), function( docs ){
-
-            console.log( docs );
-            var findids2 = Object.keys( docs );
-
-            findids2.forEach( function( id ){
-
-              var doc = docs[ id ];
-              alldocs[ doc.wofid ] = doc;
-
-              Object.keys( doc.lineage ).forEach( function( key ){
-                findids2[ doc.lineage[ key ] ] = true;
-              });
-
+            var answerIds = {};
+            answers.forEach( function( answer ){
+              answerIds[ answer.wofid ] = true;
             });
 
-            // @todo remove findids from findids2
+            findbyid( Object.keys( answerIds ), function( docs ){
 
-            findbyid( Object.keys( findids2 ), function( docs2 ){
+              // console.log( docs );
+              var parentIds = {};
 
-              Object.keys( docs2 ).forEach( function( id ){
-                alldocs[ id ] = docs2[ id ];
-              });
+              _.mapObject( docs, function( doc, id ){
 
-              $('#results li').remove();
+                if( !doc.lineage ){
+                  doc.lineage = {};
+                }
 
-              answers.forEach( function( ans, i ){
+                // console.info( 'set doc', id, doc );
+                documents[ id ] = doc;
 
-                var doc = alldocs[ ans.wofid ];
-
-                var view = [];
-                // view.push( JSON.stringify( ans ) );
-
-                var order = [
-                  'venue', 'address', 'building', 'campus', 'microhood', 'neighbourhood', 'macrohood', 'burough', 'postalcode',
-                  'locality', 'metro area', 'localadmin', 'county', 'macrocounty', 'region', 'macroregion', 'country', 'empire', 'continent', 'ocean', 'planet'
-                ];
-
-                var parentids = [];
-                order.forEach( function( o ){
-                  var k = o + '_id';
-                  if( doc.lineage.hasOwnProperty( k ) ){
-                    parentids.push( doc.lineage[k] );
-                  }
+                _.mapObject( doc.lineage, function( val, key ){
+                  parentIds[ val ] = true;
                 });
 
-                view = view.concat( parentids.map( function( parentid ){
-                  var parent = alldocs[ parentid ];
-                  var v = '<strong>' + ( parent.names.default || '??' ) + '</strong>';
-                  v += '<div class="wofinfo">';
-                  v += '<em>' + ( parent.placetype || '??' ) + '</em>';
-                  v += '<a href="https://whosonfirst.mapzen.com/spelunker/id/' + ( parentid || '??' ) + '">' + ( parentid || '??' ) + '</a>';
-                  v += '</div>';
-                  return v;
-                }));
-
-                // console.log( lins[i] );
-                $("#results").append('<li class="list-group-item"><span>' + view.join('<br />') + '</span></li>');
               });
 
-              // console.log( alldocs );
+              // @todo remove findids from parentIds
+
+              findbyid( Object.keys( parentIds ), function( docs2 ){
+
+                _.mapObject( docs2, function( val, key ){
+                  documents[ key ] = val;
+                });
+
+                $('#results li').remove();
+                $('#tokens li').remove();
+                tokens.forEach( function( token ){
+                  $("#tokens").append('<li type="button" class="btn btn-default"><span>' + token + '</span></li>');
+                });
+
+                answers.forEach( function( answer ){
+
+                  var doc = documents[ answer.wofid ];
+                  if( !doc ){
+                    console.error( 'DOC NOT FOUND!', 'ANSWER', answer.wofid );
+                  }
+                  var view = [];
+                  // view.push( JSON.stringify( ans ) );
+
+                  var order = [
+                    'venue', 'address', 'building', 'campus', 'microhood', 'neighbourhood', 'macrohood', 'burough', 'postalcode',
+                    'locality', 'metro area', 'localadmin', 'county', 'macrocounty', 'region', 'macroregion', 'country', 'empire', 'continent', 'ocean', 'planet'
+                  ];
+
+                  var parentids = [];
+                  order.forEach( function( o ){
+                    var k = o + '_id';
+                    if( doc.lineage.hasOwnProperty( k ) ){
+                      parentids.push( doc.lineage[k] );
+                    }
+                  });
+
+                  // console.log( 'parentids', parentids );
+
+                  view = view.concat( parentids.map( function( parentid, i ){
+
+                    var parent = documents[ parentid ];
+                    if( !parent ){
+                      console.error( 'DOC NOT FOUND!', 'PARENT', parentid );
+                      console.error( 'skip', parentid );
+                      return;
+                    }
+                    if( !parent.names ){
+                      parent.names = {};
+                    }
+
+                    var v = Array(i).join('&nbsp;&nbsp;&nbsp;');
+                    if( i > 0 ){ v += '└ '; }
+                    v += '<strong>' + ( parent.names.default || '??' ) + '</strong>';
+                    v += '<div class="wofinfo">';
+                    v += '<em>' + ( parent.placetype || '??' ) + '</em>';
+                    v += '<a href="https://whosonfirst.mapzen.com/spelunker/id/' + ( parentid || '??' ) + '">' + ( parentid || '??' ) + '</a>';
+                    v += '</div>';
+                    return v;
+                  }).filter(function( val ){
+                    return !!val;
+                  }));
+
+                  // console.log( lins[i] );
+                  $("#results").append('<li class="list-group-item"><span>' + view.join('<br />') + '</span></li>');
+                });
+
+                // console.log( documents );
+              });
+
+              // $('#results').clear();
+              // $('$results').
+              // console.log( lins );
+
             });
-
-            // $('#results').clear();
-            // $('$results').
-            // console.log( lins );
-
           });
         });
       }
@@ -119,9 +156,9 @@
           .done(cb);
       };
 
-      function parse( text, cb ){
-        console.info( 'parse', text );
-        request( '/parser/parse', { text: text }, cb );
+      function search( tokens, cb ){
+        console.info( 'search', tokens );
+        request( '/parser/search', { token: tokens }, cb );
       }
 
       function findbyid( ids, cb ){
@@ -129,18 +166,24 @@
         request( '/parser/findbyid', { ids: ids.join(',') }, cb );
       }
 
-      function lineage( id, cb ){
-        console.info( 'lineage', id );
-        request( '/parser/lineage/' + id, {}, cb );
+      function tokenize( text, cb ){
+        console.info( 'tokenize', text );
+        request( '/parser/tokenize', { text: text }, cb );
       }
 
       $(document).ready(function() {
+
         $('#search').on( 'submit', function( e ){
-          search( $('#text').val() );
+          query( $('#text').val() );
           return false;
         });
 
-        $('#text').val( 'wellington new zealand' );
+        $('#go').on( 'click', function( e ){
+          $('#search').submit();
+          return false;
+        });
+
+        $('#text').val( 'Augustiner Bräustuben Landsberger Str. 19, 80339 München DE' );
         $('#search').submit();
       });
     </script>
@@ -156,15 +199,15 @@
             <div class="input-group">
               <input id="text" type="text" class="form-control" placeholder="Search for...">
               <span class="input-group-btn">
-                <button class="btn btn-default" type="button">Parse!</button>
+                <button id="go" class="btn btn-default" type="button">Parse!</button>
               </span>
             </div><!-- /input-group -->
           </div><!-- /.col-lg-6 -->
         </div><!-- /.row -->
       </form>
 
-      <ul id="results" class="list-group" style="margin-top:10px;">
-      </ul>
+      <ul id="tokens" class="btn-group" role="group" style="margin-top:10px;"></ul>
+      <ul id="results" class="list-group" style="margin-top:10px;"></ul>
 
     </div>
 
