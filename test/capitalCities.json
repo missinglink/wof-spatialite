@@ -1,0 +1,4421 @@
+{
+  "name": "Capital cities",
+  "description": "All capital cities with ISO3 codes from geonames",
+  "priorityThresh": 2,
+  "source": "http://download.geonames.org/export/dump/countryInfo.txt",
+  "tests": [
+    {
+      "id": 0,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Andorra la Vella, Andorra",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Andorra la Vella",
+            "country": "Andorra",
+            "country_a": "AND"
+          }
+        ]
+      }
+    },
+    {
+      "id": 1,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Abu Dhabi, United Arab Emirates",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Abu Dhabi",
+            "country": "United Arab Emirates",
+            "country_a": "ARE"
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Kabul, Afghanistan",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Kabul",
+            "country": "Afghanistan",
+            "country_a": "AFG"
+          }
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "St. John's, Antigua and Barbuda",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "St. John's",
+            "country": "Antigua and Barbuda",
+            "country_a": "ATG"
+          }
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "The Valley, Anguilla",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "The Valley",
+            "country": "Anguilla",
+            "country_a": "AIA"
+          }
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Tirana, Albania",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Tirana",
+            "country": "Albania",
+            "country_a": "ALB"
+          }
+        ]
+      }
+    },
+    {
+      "id": 6,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Yerevan, Armenia",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Yerevan",
+            "country": "Armenia",
+            "country_a": "ARM"
+          }
+        ]
+      }
+    },
+    {
+      "id": 7,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Luanda, Angola",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Luanda",
+            "country": "Angola",
+            "country_a": "AGO"
+          }
+        ]
+      }
+    },
+    {
+      "id": 8,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Buenos Aires, Argentina",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Buenos Aires",
+            "country": "Argentina",
+            "country_a": "ARG"
+          }
+        ]
+      }
+    },
+    {
+      "id": 9,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Pago Pago, American Samoa",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Pago Pago",
+            "country": "American Samoa",
+            "country_a": "ASM"
+          }
+        ]
+      }
+    },
+    {
+      "id": 10,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Vienna, Austria",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Vienna",
+            "country": "Austria",
+            "country_a": "AUT"
+          }
+        ]
+      }
+    },
+    {
+      "id": 11,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Canberra, Australia",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Canberra",
+            "country": "Australia",
+            "country_a": "AUS"
+          }
+        ]
+      }
+    },
+    {
+      "id": 12,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Oranjestad, Aruba",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Oranjestad",
+            "country": "Aruba",
+            "country_a": "ABW"
+          }
+        ]
+      }
+    },
+    {
+      "id": 13,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Mariehamn, Aland Islands",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Mariehamn",
+            "country": "Aland Islands",
+            "country_a": "ALA"
+          }
+        ]
+      }
+    },
+    {
+      "id": 14,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Baku, Azerbaijan",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Baku",
+            "country": "Azerbaijan",
+            "country_a": "AZE"
+          }
+        ]
+      }
+    },
+    {
+      "id": 15,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Sarajevo, Bosnia and Herzegovina",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Sarajevo",
+            "country": "Bosnia and Herzegovina",
+            "country_a": "BIH"
+          }
+        ]
+      }
+    },
+    {
+      "id": 16,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Bridgetown, Barbados",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Bridgetown",
+            "country": "Barbados",
+            "country_a": "BRB"
+          }
+        ]
+      }
+    },
+    {
+      "id": 17,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Dhaka, Bangladesh",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Dhaka",
+            "country": "Bangladesh",
+            "country_a": "BGD"
+          }
+        ]
+      }
+    },
+    {
+      "id": 18,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Brussels, Belgium",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Brussels",
+            "country": "Belgium",
+            "country_a": "BEL"
+          }
+        ]
+      }
+    },
+    {
+      "id": 19,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Ouagadougou, Burkina Faso",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Ouagadougou",
+            "country": "Burkina Faso",
+            "country_a": "BFA"
+          }
+        ]
+      }
+    },
+    {
+      "id": 20,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Sofia, Bulgaria",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Sofia",
+            "country": "Bulgaria",
+            "country_a": "BGR"
+          }
+        ]
+      }
+    },
+    {
+      "id": 21,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Manama, Bahrain",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Manama",
+            "country": "Bahrain",
+            "country_a": "BHR"
+          }
+        ]
+      }
+    },
+    {
+      "id": 22,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Bujumbura, Burundi",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Bujumbura",
+            "country": "Burundi",
+            "country_a": "BDI"
+          }
+        ]
+      }
+    },
+    {
+      "id": 23,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Porto-Novo, Benin",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Porto-Novo",
+            "country": "Benin",
+            "country_a": "BEN"
+          }
+        ]
+      }
+    },
+    {
+      "id": 24,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Gustavia, Saint Barthelemy",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Gustavia",
+            "country": "Saint Barthelemy",
+            "country_a": "BLM"
+          }
+        ]
+      }
+    },
+    {
+      "id": 25,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Hamilton, Bermuda",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Hamilton",
+            "country": "Bermuda",
+            "country_a": "BMU"
+          }
+        ]
+      }
+    },
+    {
+      "id": 26,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Bandar Seri Begawan, Brunei",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Bandar Seri Begawan",
+            "country": "Brunei",
+            "country_a": "BRN"
+          }
+        ]
+      }
+    },
+    {
+      "id": 27,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Sucre, Bolivia",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Sucre",
+            "country": "Bolivia",
+            "country_a": "BOL"
+          }
+        ]
+      }
+    },
+    {
+      "id": 28,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Saint Eustatius and Saba, Bonaire",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Saint Eustatius and Saba",
+            "country": "Bonaire",
+            "country_a": "BES"
+          }
+        ]
+      }
+    },
+    {
+      "id": 29,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Brasilia, Brazil",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Brasília",
+            "country": "Brazil",
+            "country_a": "BRA"
+          }
+        ]
+      }
+    },
+    {
+      "id": 30,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Nassau, Bahamas",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Nassau",
+            "country": "The Bahamas",
+            "country_a": "BHS"
+          }
+        ]
+      }
+    },
+    {
+      "id": 31,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Thimphu, Bhutan",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Thimphu",
+            "country": "Bhutan",
+            "country_a": "BTN"
+          }
+        ]
+      }
+    },
+    {
+      "id": 32,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Gaborone, Botswana",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Gaborone",
+            "country": "Botswana",
+            "country_a": "BWA"
+          }
+        ]
+      }
+    },
+    {
+      "id": 33,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Minsk, Belarus",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Minsk",
+            "country": "Belarus",
+            "country_a": "BLR"
+          }
+        ]
+      }
+    },
+    {
+      "id": 34,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Belmopan, Belize",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Belmopan",
+            "country": "Belize",
+            "country_a": "BLZ"
+          }
+        ]
+      }
+    },
+    {
+      "id": 35,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Ottawa, Canada",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Ottawa",
+            "country": "Canada",
+            "country_a": "CAN"
+          }
+        ]
+      }
+    },
+    {
+      "id": 36,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "West Island, Cocos Islands",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "West Island",
+            "country": "Cocos Islands",
+            "country_a": "CCK"
+          }
+        ]
+      }
+    },
+    {
+      "id": 37,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Kinshasa, Democratic Republic of the Congo",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Kinshasa",
+            "country": "Democratic Republic of the Congo",
+            "country_a": "COD"
+          }
+        ]
+      }
+    },
+    {
+      "id": 38,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Bangui, Central African Republic",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Bangui",
+            "country": "Central African Republic",
+            "country_a": "CAF"
+          }
+        ]
+      }
+    },
+    {
+      "id": 39,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Brazzaville, Republic of the Congo",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Brazzaville",
+            "country": "Republic of Congo",
+            "country_a": "COG"
+          }
+        ]
+      }
+    },
+    {
+      "id": 40,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Bern, Switzerland",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Bern",
+            "country": "Switzerland",
+            "country_a": "CHE"
+          }
+        ]
+      }
+    },
+    {
+      "id": 41,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Yamoussoukro, Ivory Coast",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Yamoussoukro",
+            "country": "Ivory Coast",
+            "country_a": "CIV"
+          }
+        ]
+      }
+    },
+    {
+      "id": 42,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Avarua, Cook Islands",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Avarua",
+            "country": "Cook Islands",
+            "country_a": "COK"
+          }
+        ]
+      }
+    },
+    {
+      "id": 43,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Santiago, Chile",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Santiago",
+            "country": "Chile",
+            "country_a": "CHL"
+          }
+        ]
+      }
+    },
+    {
+      "id": 44,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Yaounde, Cameroon",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Yaoundé",
+            "country": "Cameroon",
+            "country_a": "CMR"
+          }
+        ]
+      }
+    },
+    {
+      "id": 45,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Beijing, China",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Beijing",
+            "country": "China",
+            "country_a": "CHN"
+          }
+        ]
+      }
+    },
+    {
+      "id": 46,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Bogota, Colombia",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Bogota",
+            "country": "Colombia",
+            "country_a": "COL"
+          }
+        ]
+      }
+    },
+    {
+      "id": 47,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "San Jose, Costa Rica",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "San José",
+            "country": "Costa Rica",
+            "country_a": "CRI"
+          }
+        ]
+      }
+    },
+    {
+      "id": 48,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Havana, Cuba",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Havana",
+            "country": "Cuba",
+            "country_a": "CUB"
+          }
+        ]
+      }
+    },
+    {
+      "id": 49,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Praia, Cape Verde",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Praia",
+            "country": "Cape Verde",
+            "country_a": "CPV"
+          }
+        ]
+      }
+    },
+    {
+      "id": 50,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Willemstad, Curacao",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Willemstad",
+            "country": "Curacao",
+            "country_a": "CUW"
+          }
+        ]
+      }
+    },
+    {
+      "id": 51,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Flying Fish Cove, Christmas Island",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Flying Fish Cove",
+            "country": "Christmas Island",
+            "country_a": "CXR"
+          }
+        ]
+      }
+    },
+    {
+      "id": 52,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Nicosia, Cyprus",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Nicosia",
+            "country": "Cyprus",
+            "country_a": "CYP"
+          }
+        ]
+      }
+    },
+    {
+      "id": 53,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Prague, Czech Republic",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Prague",
+            "country": "Czech Republic",
+            "country_a": "CZE"
+          }
+        ]
+      }
+    },
+    {
+      "id": 54,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Berlin, Germany",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Berlin",
+            "country": "Germany",
+            "country_a": "DEU"
+          }
+        ]
+      }
+    },
+    {
+      "id": 55,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Djibouti, Djibouti",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Djibouti",
+            "country": "Djibouti",
+            "country_a": "DJI"
+          }
+        ]
+      }
+    },
+    {
+      "id": 56,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Copenhagen, Denmark",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Copenhagen",
+            "country": "Denmark",
+            "country_a": "DNK"
+          }
+        ]
+      }
+    },
+    {
+      "id": 57,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Roseau, Dominica",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Roseau",
+            "country": "Dominica",
+            "country_a": "DMA"
+          }
+        ]
+      }
+    },
+    {
+      "id": 58,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Santo Domingo, Dominican Republic",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Santo Domingo",
+            "country": "Dominican Republic",
+            "country_a": "DOM"
+          }
+        ]
+      }
+    },
+    {
+      "id": 59,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Algiers, Algeria",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Algiers",
+            "country": "Algeria",
+            "country_a": "DZA"
+          }
+        ]
+      }
+    },
+    {
+      "id": 60,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Quito, Ecuador",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Quito",
+            "country": "Ecuador",
+            "country_a": "ECU"
+          }
+        ]
+      }
+    },
+    {
+      "id": 61,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Tallinn, Estonia",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Tallinn",
+            "country": "Estonia",
+            "country_a": "EST"
+          }
+        ]
+      }
+    },
+    {
+      "id": 62,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Cairo, Egypt",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Cairo",
+            "country": "Egypt",
+            "country_a": "EGY"
+          }
+        ]
+      }
+    },
+    {
+      "id": 63,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "El-Aaiun, Western Sahara",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "El-Aaiun",
+            "country": "Western Sahara",
+            "country_a": "ESH"
+          }
+        ]
+      }
+    },
+    {
+      "id": 64,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Asmara, Eritrea",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Asmara",
+            "country": "Eritrea",
+            "country_a": "ERI"
+          }
+        ]
+      }
+    },
+    {
+      "id": 65,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Madrid, Spain",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Madrid",
+            "country": "Spain",
+            "country_a": "ESP"
+          }
+        ]
+      }
+    },
+    {
+      "id": 66,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Addis Ababa, Ethiopia",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Addis Ababa",
+            "country": "Ethiopia",
+            "country_a": "ETH"
+          }
+        ]
+      }
+    },
+    {
+      "id": 67,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Helsinki, Finland",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Helsinki",
+            "country": "Finland",
+            "country_a": "FIN"
+          }
+        ]
+      }
+    },
+    {
+      "id": 68,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Suva, Fiji",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Suva",
+            "country": "Fiji",
+            "country_a": "FJI"
+          }
+        ]
+      }
+    },
+    {
+      "id": 69,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Stanley, Falkland Islands",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Stanley",
+            "country": "Falkland Islands",
+            "country_a": "FLK"
+          }
+        ]
+      }
+    },
+    {
+      "id": 70,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Palikir, Micronesia",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Palikir",
+            "country": "Micronesia",
+            "country_a": "FSM"
+          }
+        ]
+      }
+    },
+    {
+      "id": 71,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Torshavn, Faroe Islands",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Tórshavn",
+            "country": "Faroe Islands",
+            "country_a": "FRO"
+          }
+        ]
+      }
+    },
+    {
+      "id": 72,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Paris, France",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Paris",
+            "country": "France",
+            "country_a": "FRA"
+          }
+        ]
+      }
+    },
+    {
+      "id": 73,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Libreville, Gabon",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Libreville",
+            "country": "Gabon",
+            "country_a": "GAB"
+          }
+        ]
+      }
+    },
+    {
+      "id": 74,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "London, United Kingdom",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "London",
+            "country": "United Kingdom",
+            "country_a": "GBR"
+          }
+        ]
+      }
+    },
+    {
+      "id": 75,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "St. George's, Grenada",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "St. George's",
+            "country": "Grenada",
+            "country_a": "GRD"
+          }
+        ]
+      }
+    },
+    {
+      "id": 76,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Tbilisi, Georgia",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Tbilisi",
+            "country": "Georgia",
+            "country_a": "GEO"
+          }
+        ]
+      }
+    },
+    {
+      "id": 77,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Cayenne, French Guiana",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Cayenne",
+            "country": "French Guiana",
+            "country_a": "GUF"
+          }
+        ]
+      }
+    },
+    {
+      "id": 78,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "St Peter Port, Guernsey",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Saint Peter Port",
+            "country": "Guernsey",
+            "country_a": "GGY"
+          }
+        ]
+      }
+    },
+    {
+      "id": 79,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Accra, Ghana",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Accra",
+            "country": "Ghana",
+            "country_a": "GHA"
+          }
+        ]
+      }
+    },
+    {
+      "id": 80,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Gibraltar, Gibraltar",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Gibraltar",
+            "country": "Gibraltar",
+            "country_a": "GIB"
+          }
+        ]
+      }
+    },
+    {
+      "id": 81,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Nuuk, Greenland",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Nuuk",
+            "country": "Greenland",
+            "country_a": "GRL"
+          }
+        ]
+      }
+    },
+    {
+      "id": 82,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Banjul, Gambia",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Banjul",
+            "country": "Gambia",
+            "country_a": "GMB"
+          }
+        ]
+      }
+    },
+    {
+      "id": 83,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Conakry, Guinea",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Conakry",
+            "country": "Guinea",
+            "country_a": "GIN"
+          }
+        ]
+      }
+    },
+    {
+      "id": 84,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Basse-Terre, Guadeloupe",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Basse-Terre",
+            "country": "Guadeloupe",
+            "country_a": "GLP"
+          }
+        ]
+      }
+    },
+    {
+      "id": 85,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Malabo, Equatorial Guinea",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Malabo",
+            "country": "Equatorial Guinea",
+            "country_a": "GNQ"
+          }
+        ]
+      }
+    },
+    {
+      "id": 86,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Athens, Greece",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Athens",
+            "country": "Greece",
+            "country_a": "GRC"
+          }
+        ]
+      }
+    },
+    {
+      "id": 87,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Grytviken, South Georgia and the South Sandwich Islands",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Grytviken",
+            "country": "South Georgia and the South Sandwich Islands",
+            "country_a": "SGS"
+          }
+        ]
+      }
+    },
+    {
+      "id": 88,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Guatemala City, Guatemala",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Guatemala City",
+            "country": "Guatemala",
+            "country_a": "GTM"
+          }
+        ]
+      }
+    },
+    {
+      "id": 89,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Hagatna, Guam",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Hagåtña",
+            "country": "Guam",
+            "country_a": "GUM"
+          }
+        ]
+      }
+    },
+    {
+      "id": 90,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Bissau, Guinea-Bissau",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Bissau",
+            "country": "Guinea Bissau",
+            "country_a": "GNB"
+          }
+        ]
+      }
+    },
+    {
+      "id": 91,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Georgetown, Guyana",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Georgetown",
+            "country": "Guyana",
+            "country_a": "GUY"
+          }
+        ]
+      }
+    },
+    {
+      "id": 92,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Hong Kong, Hong Kong",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Hong Kong",
+            "country": "Hong Kong S.A.R.",
+            "country_a": "HKG"
+          }
+        ]
+      }
+    },
+    {
+      "id": 93,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Tegucigalpa, Honduras",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Tegucigalpa",
+            "country": "Honduras",
+            "country_a": "HND"
+          }
+        ]
+      }
+    },
+    {
+      "id": 94,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Zagreb, Croatia",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Zagreb",
+            "country": "Croatia",
+            "country_a": "HRV"
+          }
+        ]
+      }
+    },
+    {
+      "id": 95,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Port-au-Prince, Haiti",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Port-au-Prince",
+            "country": "Haiti",
+            "country_a": "HTI"
+          }
+        ]
+      }
+    },
+    {
+      "id": 96,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Budapest, Hungary",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Budapest",
+            "country": "Hungary",
+            "country_a": "HUN"
+          }
+        ]
+      }
+    },
+    {
+      "id": 97,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Jakarta, Indonesia",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Jakarta",
+            "country": "Indonesia",
+            "country_a": "IDN"
+          }
+        ]
+      }
+    },
+    {
+      "id": 98,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Dublin, Ireland",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Dublin",
+            "country": "Ireland",
+            "country_a": "IRL"
+          }
+        ]
+      }
+    },
+    {
+      "id": 99,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Jerusalem, Israel",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Jerusalem",
+            "country": "Israel",
+            "country_a": "ISR"
+          }
+        ]
+      }
+    },
+    {
+      "id": 100,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Douglas, Isle of Man",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Douglas",
+            "country": "Isle of Man",
+            "country_a": "IMN"
+          }
+        ]
+      }
+    },
+    {
+      "id": 101,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "New Delhi, India",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "New Delhi",
+            "country": "India",
+            "country_a": "IND"
+          }
+        ]
+      }
+    },
+    {
+      "id": 102,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Diego Garcia, British Indian Ocean Territory",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Diego Garcia",
+            "country": "British Indian Ocean Territory",
+            "country_a": "IOT"
+          }
+        ]
+      }
+    },
+    {
+      "id": 103,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Baghdad, Iraq",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Baghdad",
+            "country": "Iraq",
+            "country_a": "IRQ"
+          }
+        ]
+      }
+    },
+    {
+      "id": 104,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Tehran, Iran",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Tehran",
+            "country": "Iran",
+            "country_a": "IRN"
+          }
+        ]
+      }
+    },
+    {
+      "id": 105,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Reykjavik, Iceland",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Reykjavík",
+            "country": "Iceland",
+            "country_a": "ISL"
+          }
+        ]
+      }
+    },
+    {
+      "id": 106,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Rome, Italy",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Rome",
+            "country": "Italy",
+            "country_a": "ITA"
+          }
+        ]
+      }
+    },
+    {
+      "id": 107,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Saint Helier, Jersey",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Saint Helier",
+            "country": "Jersey",
+            "country_a": "JEY"
+          }
+        ]
+      }
+    },
+    {
+      "id": 108,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Kingston, Jamaica",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Kingston",
+            "country": "Jamaica",
+            "country_a": "JAM"
+          }
+        ]
+      }
+    },
+    {
+      "id": 109,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Amman, Jordan",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Amman",
+            "country": "Jordan",
+            "country_a": "JOR"
+          }
+        ]
+      }
+    },
+    {
+      "id": 110,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Tokyo, Japan",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Tokyo",
+            "country": "Japan",
+            "country_a": "JPN"
+          }
+        ]
+      }
+    },
+    {
+      "id": 111,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Nairobi, Kenya",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Nairobi",
+            "country": "Kenya",
+            "country_a": "KEN"
+          }
+        ]
+      }
+    },
+    {
+      "id": 112,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Bishkek, Kyrgyzstan",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Bishkek",
+            "country": "Kyrgyzstan",
+            "country_a": "KGZ"
+          }
+        ]
+      }
+    },
+    {
+      "id": 113,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Phnom Penh, Cambodia",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Phnom Penh",
+            "country": "Cambodia",
+            "country_a": "KHM"
+          }
+        ]
+      }
+    },
+    {
+      "id": 114,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Tarawa, Kiribati",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Tarawa",
+            "country": "Kiribati",
+            "country_a": "KIR"
+          }
+        ]
+      }
+    },
+    {
+      "id": 115,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Moroni, Comoros",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Moroni",
+            "country": "Comoros",
+            "country_a": "COM"
+          }
+        ]
+      }
+    },
+    {
+      "id": 116,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Basseterre, Saint Kitts and Nevis",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Basseterre",
+            "country": "Saint Kitts and Nevis",
+            "country_a": "KNA"
+          }
+        ]
+      }
+    },
+    {
+      "id": 117,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Pyongyang, North Korea",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Pyongyang",
+            "country": "North Korea",
+            "country_a": "PRK"
+          }
+        ]
+      }
+    },
+    {
+      "id": 118,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Seoul, South Korea",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Seoul",
+            "country": "South Korea",
+            "country_a": "KOR"
+          }
+        ]
+      }
+    },
+    {
+      "id": 119,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Pristina, Kosovo",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Pristina",
+            "country": "Kosovo",
+            "country_a": "XKX"
+          }
+        ]
+      }
+    },
+    {
+      "id": 120,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Kuwait City, Kuwait",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Kuwait City",
+            "country": "Kuwait",
+            "country_a": "KWT"
+          }
+        ]
+      }
+    },
+    {
+      "id": 121,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "George Town, Cayman Islands",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "George Town",
+            "country": "Cayman Islands",
+            "country_a": "CYM"
+          }
+        ]
+      }
+    },
+    {
+      "id": 122,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Astana, Kazakhstan",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Astana",
+            "country": "Kazakhstan",
+            "country_a": "KAZ"
+          }
+        ]
+      }
+    },
+    {
+      "id": 123,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Vientiane, Laos",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Vientiane",
+            "country": "Laos",
+            "country_a": "LAO"
+          }
+        ]
+      }
+    },
+    {
+      "id": 124,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Beirut, Lebanon",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Beirut",
+            "country": "Lebanon",
+            "country_a": "LBN"
+          }
+        ]
+      }
+    },
+    {
+      "id": 125,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Castries, Saint Lucia",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Castries",
+            "country": "Saint Lucia",
+            "country_a": "LCA"
+          }
+        ]
+      }
+    },
+    {
+      "id": 126,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Vaduz, Liechtenstein",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Vaduz",
+            "country": "Liechtenstein",
+            "country_a": "LIE"
+          }
+        ]
+      }
+    },
+    {
+      "id": 127,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Colombo, Sri Lanka",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Colombo",
+            "country": "Sri Lanka",
+            "country_a": "LKA"
+          }
+        ]
+      }
+    },
+    {
+      "id": 128,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Monrovia, Liberia",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Monrovia",
+            "country": "Liberia",
+            "country_a": "LBR"
+          }
+        ]
+      }
+    },
+    {
+      "id": 129,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Maseru, Lesotho",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Maseru",
+            "country": "Lesotho",
+            "country_a": "LSO"
+          }
+        ]
+      }
+    },
+    {
+      "id": 130,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Vilnius, Lithuania",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Vilnius",
+            "country": "Lithuania",
+            "country_a": "LTU"
+          }
+        ]
+      }
+    },
+    {
+      "id": 131,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Luxembourg, Luxembourg",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Luxembourg",
+            "country": "Luxembourg",
+            "country_a": "LUX"
+          }
+        ]
+      }
+    },
+    {
+      "id": 132,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Riga, Latvia",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Riga",
+            "country": "Latvia",
+            "country_a": "LVA"
+          }
+        ]
+      }
+    },
+    {
+      "id": 133,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Tripoli, Libya",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Tripoli",
+            "country": "Libya",
+            "country_a": "LBY"
+          }
+        ]
+      }
+    },
+    {
+      "id": 134,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Rabat, Morocco",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Rabat",
+            "country": "Morocco",
+            "country_a": "MAR"
+          }
+        ]
+      }
+    },
+    {
+      "id": 135,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Monaco, Monaco",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Monaco",
+            "country": "Monaco",
+            "country_a": "MCO"
+          }
+        ]
+      }
+    },
+    {
+      "id": 136,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Chisinau, Moldova",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Chişinău",
+            "country": "Moldova",
+            "country_a": "MDA"
+          }
+        ]
+      }
+    },
+    {
+      "id": 137,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Podgorica, Montenegro",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Podgorica",
+            "country": "Montenegro",
+            "country_a": "MNE"
+          }
+        ]
+      }
+    },
+    {
+      "id": 138,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Marigot, Saint Martin",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Marigot",
+            "country": "Saint Martin",
+            "country_a": "MAF"
+          }
+        ]
+      }
+    },
+    {
+      "id": 139,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Antananarivo, Madagascar",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Antananarivo",
+            "country": "Madagascar",
+            "country_a": "MDG"
+          }
+        ]
+      }
+    },
+    {
+      "id": 140,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Majuro, Marshall Islands",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Majuro",
+            "country": "Marshall Islands",
+            "country_a": "MHL"
+          }
+        ]
+      }
+    },
+    {
+      "id": 141,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Skopje, Macedonia",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Skopje",
+            "country": "Macedonia",
+            "country_a": "MKD"
+          }
+        ]
+      }
+    },
+    {
+      "id": 142,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Bamako, Mali",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Bamako",
+            "country": "Mali",
+            "country_a": "MLI"
+          }
+        ]
+      }
+    },
+    {
+      "id": 143,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Nay Pyi Taw, Myanmar",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Nay Pyi Taw",
+            "country": "Myanmar",
+            "country_a": "MMR"
+          }
+        ]
+      }
+    },
+    {
+      "id": 144,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Ulan Bator, Mongolia",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Ulan Bator",
+            "country": "Mongolia",
+            "country_a": "MNG"
+          }
+        ]
+      }
+    },
+    {
+      "id": 145,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Macao, Macao",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Macao",
+            "country": "Macao S.A.R",
+            "country_a": "MAC"
+          }
+        ]
+      }
+    },
+    {
+      "id": 146,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Saipan, Northern Mariana Islands",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Saipan",
+            "country": "Northern Mariana Islands",
+            "country_a": "MNP"
+          }
+        ]
+      }
+    },
+    {
+      "id": 147,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Fort-de-France, Martinique",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Fort-de-France",
+            "country": "Martinique",
+            "country_a": "MTQ"
+          }
+        ]
+      }
+    },
+    {
+      "id": 148,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Nouakchott, Mauritania",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Nouakchott",
+            "country": "Mauritania",
+            "country_a": "MRT"
+          }
+        ]
+      }
+    },
+    {
+      "id": 149,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Plymouth, Montserrat",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Plymouth",
+            "country": "Montserrat",
+            "country_a": "MSR"
+          }
+        ]
+      }
+    },
+    {
+      "id": 150,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Valletta, Malta",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Valletta",
+            "country": "Malta",
+            "country_a": "MLT"
+          }
+        ]
+      }
+    },
+    {
+      "id": 151,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Port Louis, Mauritius",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Port Louis",
+            "country": "Mauritius",
+            "country_a": "MUS"
+          }
+        ]
+      }
+    },
+    {
+      "id": 152,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Male, Maldives",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Male",
+            "country": "Maldives",
+            "country_a": "MDV"
+          }
+        ]
+      }
+    },
+    {
+      "id": 153,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Lilongwe, Malawi",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Lilongwe",
+            "country": "Malawi",
+            "country_a": "MWI"
+          }
+        ]
+      }
+    },
+    {
+      "id": 154,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Mexico City, Mexico",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Mexico City",
+            "country": "Mexico",
+            "country_a": "MEX"
+          }
+        ]
+      }
+    },
+    {
+      "id": 155,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Kuala Lumpur, Malaysia",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Kuala Lumpur",
+            "country": "Malaysia",
+            "country_a": "MYS"
+          }
+        ]
+      }
+    },
+    {
+      "id": 156,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Maputo, Mozambique",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Maputo",
+            "country": "Mozambique",
+            "country_a": "MOZ"
+          }
+        ]
+      }
+    },
+    {
+      "id": 157,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Windhoek, Namibia",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Windhoek",
+            "country": "Namibia",
+            "country_a": "NAM"
+          }
+        ]
+      }
+    },
+    {
+      "id": 158,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Noumea, New Caledonia",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Nouméa",
+            "country": "New Caledonia",
+            "country_a": "NCL"
+          }
+        ]
+      }
+    },
+    {
+      "id": 159,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Niamey, Niger",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Niamey",
+            "country": "Niger",
+            "country_a": "NER"
+          }
+        ]
+      }
+    },
+    {
+      "id": 160,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Kingston, Norfolk Island",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Kingston",
+            "country": "Norfolk Island",
+            "country_a": "NFK"
+          }
+        ]
+      }
+    },
+    {
+      "id": 161,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Abuja, Nigeria",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Abuja",
+            "country": "Nigeria",
+            "country_a": "NGA"
+          }
+        ]
+      }
+    },
+    {
+      "id": 162,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Managua, Nicaragua",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Managua",
+            "country": "Nicaragua",
+            "country_a": "NIC"
+          }
+        ]
+      }
+    },
+    {
+      "id": 163,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Amsterdam, Netherlands",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Amsterdam",
+            "country": "Netherlands",
+            "country_a": "NLD"
+          }
+        ]
+      }
+    },
+    {
+      "id": 164,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Oslo, Norway",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Oslo",
+            "country": "Norway",
+            "country_a": "NOR"
+          }
+        ]
+      }
+    },
+    {
+      "id": 165,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Kathmandu, Nepal",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Kathmandu",
+            "country": "Nepal",
+            "country_a": "NPL"
+          }
+        ]
+      }
+    },
+    {
+      "id": 166,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Yaren, Nauru",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Yaren",
+            "country": "Nauru",
+            "country_a": "NRU"
+          }
+        ]
+      }
+    },
+    {
+      "id": 167,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Alofi, Niue",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Alofi",
+            "country": "Niue",
+            "country_a": "NIU"
+          }
+        ]
+      }
+    },
+    {
+      "id": 168,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Wellington, New Zealand",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Wellington",
+            "country": "New Zealand",
+            "country_a": "NZL"
+          }
+        ]
+      }
+    },
+    {
+      "id": 169,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Muscat, Oman",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Muscat",
+            "country": "Oman",
+            "country_a": "OMN"
+          }
+        ]
+      }
+    },
+    {
+      "id": 170,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Panama City, Panama",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Panamá",
+            "country": "Panama",
+            "country_a": "PAN"
+          }
+        ]
+      }
+    },
+    {
+      "id": 171,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Lima, Peru",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Lima",
+            "country": "Peru",
+            "country_a": "PER"
+          }
+        ]
+      }
+    },
+    {
+      "id": 172,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Papeete, French Polynesia",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Papeete",
+            "country": "French Polynesia",
+            "country_a": "PYF"
+          }
+        ]
+      }
+    },
+    {
+      "id": 173,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Port Moresby, Papua New Guinea",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Port Moresby",
+            "country": "Papua New Guinea",
+            "country_a": "PNG"
+          }
+        ]
+      }
+    },
+    {
+      "id": 174,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Manila, Philippines",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Manila",
+            "country": "Philippines",
+            "country_a": "PHL"
+          }
+        ]
+      }
+    },
+    {
+      "id": 175,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Islamabad, Pakistan",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Islamabad",
+            "country": "Pakistan",
+            "country_a": "PAK"
+          }
+        ]
+      }
+    },
+    {
+      "id": 176,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Warsaw, Poland",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Warsaw",
+            "country": "Poland",
+            "country_a": "POL"
+          }
+        ]
+      }
+    },
+    {
+      "id": 177,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Saint-Pierre, Saint Pierre and Miquelon",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Saint-Pierre",
+            "country": "Saint Pierre and Miquelon",
+            "country_a": "SPM"
+          }
+        ]
+      }
+    },
+    {
+      "id": 178,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Adamstown, Pitcairn",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Adamstown",
+            "country": "Pitcairn",
+            "country_a": "PCN"
+          }
+        ]
+      }
+    },
+    {
+      "id": 179,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "San Juan, Puerto Rico",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "San Juan",
+            "country": "Puerto Rico",
+            "country_a": "PRI"
+          }
+        ]
+      }
+    },
+    {
+      "id": 180,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "East Jerusalem, Palestinian Territory",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "East Jerusalem",
+            "country": "Palestine",
+            "country_a": "PSE"
+          }
+        ]
+      }
+    },
+    {
+      "id": 181,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Lisbon, Portugal",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Lisbon",
+            "country": "Portugal",
+            "country_a": "PRT"
+          }
+        ]
+      }
+    },
+    {
+      "id": 182,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Melekeok, Palau",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Melekeok",
+            "country": "Palau",
+            "country_a": "PLW"
+          }
+        ]
+      }
+    },
+    {
+      "id": 183,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Asuncion, Paraguay",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Asunción",
+            "country": "Paraguay",
+            "country_a": "PRY"
+          }
+        ]
+      }
+    },
+    {
+      "id": 184,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Doha, Qatar",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Doha",
+            "country": "Qatar",
+            "country_a": "QAT"
+          }
+        ]
+      }
+    },
+    {
+      "id": 185,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Saint-Denis, Reunion",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Saint-Denis",
+            "country": "Reunion",
+            "country_a": "REU"
+          }
+        ]
+      }
+    },
+    {
+      "id": 186,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Bucharest, Romania",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Bucharest",
+            "country": "Romania",
+            "country_a": "ROU"
+          }
+        ]
+      }
+    },
+    {
+      "id": 187,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Belgrade, Serbia",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Belgrade",
+            "country": "Serbia",
+            "country_a": "SRB"
+          }
+        ]
+      }
+    },
+    {
+      "id": 188,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Moscow, Russia",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Moscow",
+            "country": "Russia",
+            "country_a": "RUS"
+          }
+        ]
+      }
+    },
+    {
+      "id": 189,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Kigali, Rwanda",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Kigali",
+            "country": "Rwanda",
+            "country_a": "RWA"
+          }
+        ]
+      }
+    },
+    {
+      "id": 190,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Riyadh, Saudi Arabia",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Riyadh",
+            "country": "Saudi Arabia",
+            "country_a": "SAU"
+          }
+        ]
+      }
+    },
+    {
+      "id": 191,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Honiara, Solomon Islands",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Honiara",
+            "country": "Solomon Islands",
+            "country_a": "SLB"
+          }
+        ]
+      }
+    },
+    {
+      "id": 192,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Victoria, Seychelles",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Victoria",
+            "country": "Seychelles",
+            "country_a": "SYC"
+          }
+        ]
+      }
+    },
+    {
+      "id": 193,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Khartoum, Sudan",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Khartoum",
+            "country": "Sudan",
+            "country_a": "SDN"
+          }
+        ]
+      }
+    },
+    {
+      "id": 194,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Juba, South Sudan",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Juba",
+            "country": "South Sudan",
+            "country_a": "SSD"
+          }
+        ]
+      }
+    },
+    {
+      "id": 195,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Stockholm, Sweden",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Stockholm",
+            "country": "Sweden",
+            "country_a": "SWE"
+          }
+        ]
+      }
+    },
+    {
+      "id": 196,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Singapore, Singapore",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Singapore",
+            "country": "Singapore",
+            "country_a": "SGP"
+          }
+        ]
+      }
+    },
+    {
+      "id": 197,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Jamestown, Saint Helena",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Jamestown",
+            "country": "Saint Helena",
+            "country_a": "SHN"
+          }
+        ]
+      }
+    },
+    {
+      "id": 198,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Ljubljana, Slovenia",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Ljubljana",
+            "country": "Slovenia",
+            "country_a": "SVN"
+          }
+        ]
+      }
+    },
+    {
+      "id": 199,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Longyearbyen, Svalbard and Jan Mayen",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Longyearbyen",
+            "country": "Svalbard and Jan Mayen",
+            "country_a": "SJM"
+          }
+        ]
+      }
+    },
+    {
+      "id": 200,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Bratislava, Slovakia",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Bratislava",
+            "country": "Slovakia",
+            "country_a": "SVK"
+          }
+        ]
+      }
+    },
+    {
+      "id": 201,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Freetown, Sierra Leone",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Freetown",
+            "country": "Sierra Leone",
+            "country_a": "SLE"
+          }
+        ]
+      }
+    },
+    {
+      "id": 202,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "San Marino, San Marino",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "San Marino",
+            "country": "San Marino",
+            "country_a": "SMR"
+          }
+        ]
+      }
+    },
+    {
+      "id": 203,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Dakar, Senegal",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Dakar",
+            "country": "Senegal",
+            "country_a": "SEN"
+          }
+        ]
+      }
+    },
+    {
+      "id": 204,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Mogadishu, Somalia",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Mogadishu",
+            "country": "Somalia",
+            "country_a": "SOM"
+          }
+        ]
+      }
+    },
+    {
+      "id": 205,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Paramaribo, Suriname",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Paramaribo",
+            "country": "Suriname",
+            "country_a": "SUR"
+          }
+        ]
+      }
+    },
+    {
+      "id": 206,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Sao Tome, Sao Tome and Principe",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "São Tomé",
+            "country": "Sao Tome and Principe",
+            "country_a": "STP"
+          }
+        ]
+      }
+    },
+    {
+      "id": 207,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "San Salvador, El Salvador",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "San Salvador",
+            "country": "El Salvador",
+            "country_a": "SLV"
+          }
+        ]
+      }
+    },
+    {
+      "id": 208,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Philipsburg, Sint Maarten",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Philipsburg",
+            "country": "Sint Maarten",
+            "country_a": "SXM"
+          }
+        ]
+      }
+    },
+    {
+      "id": 209,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Damascus, Syria",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Damascus",
+            "country": "Syria",
+            "country_a": "SYR"
+          }
+        ]
+      }
+    },
+    {
+      "id": 210,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Mbabane, Swaziland",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Mbabane",
+            "country": "Swaziland",
+            "country_a": "SWZ"
+          }
+        ]
+      }
+    },
+    {
+      "id": 211,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Cockburn Town, Turks and Caicos Islands",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Cockburn Town",
+            "country": "Turks and Caicos Islands",
+            "country_a": "TCA"
+          }
+        ]
+      }
+    },
+    {
+      "id": 212,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "N'Djamena, Chad",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "N'Djamena",
+            "country": "Chad",
+            "country_a": "TCD"
+          }
+        ]
+      }
+    },
+    {
+      "id": 213,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Port-aux-Francais, French Southern Territories",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Port-aux-Français",
+            "country": "French Southern Territories",
+            "country_a": "ATF"
+          }
+        ]
+      }
+    },
+    {
+      "id": 214,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Lome, Togo",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Lomé",
+            "country": "Togo",
+            "country_a": "TGO"
+          }
+        ]
+      }
+    },
+    {
+      "id": 215,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Bangkok, Thailand",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Bangkok",
+            "country": "Thailand",
+            "country_a": "THA"
+          }
+        ]
+      }
+    },
+    {
+      "id": 216,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Dushanbe, Tajikistan",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Dushanbe",
+            "country": "Tajikistan",
+            "country_a": "TJK"
+          }
+        ]
+      }
+    },
+    {
+      "id": 217,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Dili, East Timor",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Dili",
+            "country": "East Timor",
+            "country_a": "TLS"
+          }
+        ]
+      }
+    },
+    {
+      "id": 218,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Ashgabat, Turkmenistan",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Ashgabat",
+            "country": "Turkmenistan",
+            "country_a": "TKM"
+          }
+        ]
+      }
+    },
+    {
+      "id": 219,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Tunis, Tunisia",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Tunis",
+            "country": "Tunisia",
+            "country_a": "TUN"
+          }
+        ]
+      }
+    },
+    {
+      "id": 220,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Nuku'alofa, Tonga",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Nukuhetulu",
+            "country": "Tonga",
+            "country_a": "TON"
+          }
+        ]
+      }
+    },
+    {
+      "id": 221,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Ankara, Turkey",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Ankara",
+            "country": "Turkey",
+            "country_a": "TUR"
+          }
+        ]
+      }
+    },
+    {
+      "id": 222,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Port of Spain, Trinidad and Tobago",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Port of Spain",
+            "country": "Trinidad and Tobago",
+            "country_a": "TTO"
+          }
+        ]
+      }
+    },
+    {
+      "id": 223,
+      "status": "pass",
+      "issue": "https://github.com/whosonfirst/whosonfirst-data/issues/257",
+      "user": "Julian",
+      "in": {
+        "text": "Funafuti, Tuvalu",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Funafuti",
+            "country": "Tuvalu",
+            "country_a": "TUV"
+          }
+        ]
+      }
+    },
+    {
+      "id": 224,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Taipei, Taiwan",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Taipei",
+            "country": "Taiwan",
+            "country_a": "TWN"
+          }
+        ]
+      }
+    },
+    {
+      "id": 225,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Dodoma, Tanzania",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Dodoma",
+            "country": "United Republic of Tanzania",
+            "country_a": "TZA"
+          }
+        ]
+      }
+    },
+    {
+      "id": 226,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Kiev, Ukraine",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Kiev",
+            "country": "Ukraine",
+            "country_a": "UKR"
+          }
+        ]
+      }
+    },
+    {
+      "id": 227,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Kampala, Uganda",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Kampala",
+            "country": "Uganda",
+            "country_a": "UGA"
+          }
+        ]
+      }
+    },
+    {
+      "id": 228,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Washington, United States",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Washington",
+            "country": "United States",
+            "country_a": "USA"
+          }
+        ]
+      }
+    },
+    {
+      "id": 229,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Montevideo, Uruguay",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Montevideo",
+            "country": "Uruguay",
+            "country_a": "URY"
+          }
+        ]
+      }
+    },
+    {
+      "id": 230,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Tashkent, Uzbekistan",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Tashkent",
+            "country": "Uzbekistan",
+            "country_a": "UZB"
+          }
+        ]
+      }
+    },
+    {
+      "id": 231,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Vatican City, Vatican",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Vatican City",
+            "country": "Vatican",
+            "country_a": "VAT"
+          }
+        ]
+      }
+    },
+    {
+      "id": 232,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Kingstown, Saint Vincent and the Grenadines",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Kingstown",
+            "country": "Saint Vincent and the Grenadines",
+            "country_a": "VCT"
+          }
+        ]
+      }
+    },
+    {
+      "id": 233,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Caracas, Venezuela",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Caracas",
+            "country": "Venezuela",
+            "country_a": "VEN"
+          }
+        ]
+      }
+    },
+    {
+      "id": 234,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Road Town, British Virgin Islands",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Road Town",
+            "country": "British Virgin Islands",
+            "country_a": "VGB"
+          }
+        ]
+      }
+    },
+    {
+      "id": 235,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Charlotte Amalie, U.S. Virgin Islands",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Charlotte Amalie",
+            "country": "U.S. Virgin Islands",
+            "country_a": "VIR"
+          }
+        ]
+      }
+    },
+    {
+      "id": 236,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Hanoi, Vietnam",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Hanoi",
+            "country": "Vietnam",
+            "country_a": "VNM"
+          }
+        ]
+      }
+    },
+    {
+      "id": 237,
+      "status": "fail",
+      "description": "not in WOF",
+      "issue": "https://github.com/whosonfirst/whosonfirst-data/issues/258",
+      "user": "Julian",
+      "in": {
+        "text": "Port Vila, Vanuatu",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Port Vila",
+            "country": "Vanuatu",
+            "country_a": "VUT"
+          }
+        ]
+      }
+    },
+    {
+      "id": 238,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Mata Utu, Wallis and Futuna",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Mata Utu",
+            "country": "Wallis and Futuna",
+            "country_a": "WLF"
+          }
+        ]
+      }
+    },
+    {
+      "id": 239,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Apia, Samoa",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Apia",
+            "country": "Samoa",
+            "country_a": "WSM"
+          }
+        ]
+      }
+    },
+    {
+      "id": 240,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Sanaa, Yemen",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Sanaa",
+            "country": "Yemen",
+            "country_a": "YEM"
+          }
+        ]
+      }
+    },
+    {
+      "id": 241,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Mamoudzou, Mayotte",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Mamoudzou",
+            "country": "Mayotte",
+            "country_a": "MYT"
+          }
+        ]
+      }
+    },
+    {
+      "id": 242,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Pretoria, South Africa",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Pretoria",
+            "country": "South Africa",
+            "country_a": "ZAF"
+          }
+        ]
+      }
+    },
+    {
+      "id": 243,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Lusaka, Zambia",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Lusaka",
+            "country": "Zambia",
+            "country_a": "ZMB"
+          }
+        ]
+      }
+    },
+    {
+      "id": 244,
+      "status": "pass",
+      "user": "Julian",
+      "in": {
+        "text": "Harare, Zimbabwe",
+        "layers": "coarse"
+      },
+      "expected": {
+        "properties": [
+          {
+            "name": "Harare",
+            "country": "Zimbabwe",
+            "country_a": "ZWE"
+          }
+        ]
+      }
+    }
+  ]
+}

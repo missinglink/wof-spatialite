@@ -1,0 +1,4 @@
+Port Vila, Vanuatu - bad parse?
+Charlotte Amalie, U.S. Virgin Islands - (whosonfirst:locality:101734673) "United States Virgin Islands"
+Nuku'alofa, Tonga - (whosonfirst:locality:890424321) "Nukualofa Village"
+Port-aux-Francais, French Southern Territories - (whosonfirst:locality:890431493) "French Southern and Antarctic Lands"
