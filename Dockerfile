@@ -21,4 +21,5 @@ WORKDIR /usr/src/repos/wof-spatialite
 ENTRYPOINT [ "./spatialite.sh" ]
 
 # copy source code
+COPY ./init.sql /usr/src/repos/wof-spatialite
 COPY ./spatialite.sh /usr/src/repos/wof-spatialite
