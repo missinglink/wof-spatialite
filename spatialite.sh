@@ -21,8 +21,7 @@ DB="$OUTDIR/wof.sqlite3";
 
 ## init - set up a new database
 function init(){
-  sqlite3 $DB <<SQL
-SELECT load_extension('mod_spatialite');
+  sqlite3 --init 'init.sql' ${DB} <<SQL
 SELECT InitSpatialMetaData(1);
 
 CREATE TABLE IF NOT EXISTS place (
@@ -58,8 +57,7 @@ chmod 0666 "$DB";
 ## $1: geojson path: eg. '/tmp/test.geojson'
 ## $2: property to extract: eg. '$.geometry'
 function json(){
-  sqlite3 $DB <<SQL
-SELECT load_extension('mod_spatialite');
+  sqlite3 --init 'init.sql' ${DB} <<SQL
 WITH file AS ( SELECT readfile('$1') as json )
 SELECT json_extract(( SELECT json FROM file ), '$2' );
 SQL
@@ -69,15 +67,7 @@ SQL
 ## $1: geojson path: eg. '/tmp/test.geojson'
 function index(){
   echo $1;
-  sqlite3 $DB <<SQL
-PRAGMA foreign_keys=OFF;
-PRAGMA page_size=4096;
-PRAGMA cache_size=-2000;
-PRAGMA synchronous=OFF;
-PRAGMA journal_mode=OFF;
-PRAGMA temp_store=MEMORY;
-
-SELECT load_extension('mod_spatialite');
+  sqlite3 --init 'init.sql' ${DB} <<SQL
 BEGIN;
 
 CREATE TEMP TABLE file ( json TEXT );
@@ -112,15 +102,7 @@ function index_all(){
 
 ## fixify - fix broken geometries
 function fixify(){
-  sqlite3 $DB <<SQL
-PRAGMA foreign_keys=OFF;
-PRAGMA page_size=4096;
-PRAGMA cache_size=-2000;
-PRAGMA synchronous=OFF;
-PRAGMA journal_mode=OFF;
-PRAGMA temp_store=MEMORY;
-
-SELECT load_extension('mod_spatialite');
+  sqlite3 --init 'init.sql' ${DB} <<SQL
 UPDATE place SET geom = MakeValid( geom );
 SQL
 }
@@ -128,15 +110,7 @@ SQL
 ## simplify - perform Douglas-Peuker simplification on all polygons
 ## $1: tolerance: eg. '0.1'
 function simplify(){
-  sqlite3 $DB <<SQL
-PRAGMA foreign_keys=OFF;
-PRAGMA page_size=4096;
-PRAGMA cache_size=-2000;
-PRAGMA synchronous=OFF;
-PRAGMA journal_mode=OFF;
-PRAGMA temp_store=MEMORY;
-
-SELECT load_extension('mod_spatialite');
+  sqlite3 --init 'init.sql' ${DB} <<SQL
 UPDATE place SET geom = SimplifyPreserveTopology( geom, $1 );
 SQL
 }
@@ -148,15 +122,7 @@ SQL
 function grid(){
 echo 'grid' "$1" "$2" "($1+$3)" "($2+$3)";
 
-sqlite3 "$DB" <<SQL
-PRAGMA foreign_keys=OFF;
-PRAGMA page_size=4096;
-PRAGMA cache_size=-2000;
-PRAGMA synchronous=OFF;
-PRAGMA journal_mode=OFF;
-PRAGMA temp_store=MEMORY;
-SELECT load_extension('mod_spatialite');
-
+sqlite3 --init 'init.sql' "$DB" <<SQL
 INSERT INTO grid (id, place_id, geom)
 SELECT NULL, id, CastToMultiPolygon(Intersection(geom, BuildMbr($1, $2, ($1+$3), ($2+$3), 4326))) as piece
 FROM place
@@ -186,8 +152,7 @@ function grid_all(){
 ## $1: longitude: eg. '151.5942043'
 ## $2: latitude: eg. '-33.013441'
 function pip(){
-  sqlite3 $DB <<SQL
-SELECT load_extension('mod_spatialite');
+  sqlite3 --init 'init.sql' ${DB} <<SQL
 .timer on
 
 SELECT * FROM place
@@ -199,8 +164,7 @@ SQL
 ## $1: longitude: eg. '151.5942043'
 ## $2: latitude: eg. '-33.013441'
 function pipfast(){
-  sqlite3 $DB <<SQL
-SELECT load_extension('mod_spatialite');
+  sqlite3 --init 'init.sql' ${DB} <<SQL
 .timer on
 
 SELECT * FROM place
@@ -216,8 +180,7 @@ SQL
 ## $1: longitude: eg. '151.5942043'
 ## $2: latitude: eg. '-33.013441'
 function pipturbo(){
-  sqlite3 $DB <<SQL
-SELECT load_extension('mod_spatialite');
+  sqlite3 --init 'init.sql' ${DB} <<SQL
 .timer on
 
 SELECT * FROM place
@@ -235,8 +198,7 @@ SQL
 ## contains - find all child polygons contained by: $1
 ## $1: id: eg. '2316741'
 function contains(){
-  sqlite3 $DB <<SQL
-SELECT load_extension('mod_spatialite');
+  sqlite3 --init 'init.sql' ${DB} <<SQL
 SELECT * FROM place
 WHERE id IN (
   SELECT pkid FROM idx_place_geom
@@ -253,8 +215,7 @@ SQL
 ## within - find all parent polygons containing id: $1
 ## $1: id: eg. '2316741'
 function within(){
-  sqlite3 $DB <<SQL
-SELECT load_extension('mod_spatialite');
+  sqlite3 --init 'init.sql' ${DB} <<SQL
 SELECT * FROM place
 WHERE id IN (
   SELECT pkid FROM idx_place_geom
@@ -274,20 +235,12 @@ SQL
 function extract(){
 
   # switch db var
-  MAINDB="$DB";
-  DB="$1";
+  MAINDB="${DB}";
+  DB="${1}";
 
   init; # init new db
 
-  sqlite3 $MAINDB <<SQL
-PRAGMA foreign_keys=OFF;
-PRAGMA page_size=4096;
-PRAGMA cache_size=-2000;
-PRAGMA synchronous=OFF;
-PRAGMA journal_mode=OFF;
-PRAGMA temp_store=MEMORY;
-
-SELECT load_extension('mod_spatialite');
+  sqlite3 ${MAINDB} <<SQL
 ATTACH DATABASE '$1' AS 'extract';
 WITH base AS ( SELECT * FROM place JOIN idx_place_geom ON place.id = idx_place_geom.pkid WHERE place.id=$2 )
 INSERT INTO extract.place SELECT * FROM main.place
@@ -306,8 +259,7 @@ SQL
 }
 
 # copy all records enveloping point
-# time sqlite3 $"$OUTDIR/wof.sqlite3" <<SQL
-# SELECT load_extension('mod_spatialite');
+# time sqlite3 --init 'init.sql' $"$OUTDIR/wof.sqlite3" <<SQL
 # .timer on
 #
 # ATTACH DATABASE '/media/flash/wof.sqlite3.backup' as 'source';
