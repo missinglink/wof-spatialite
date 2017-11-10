@@ -9,9 +9,9 @@ OUTDIR=${OUTDIR:-'/data/wof-spatialite'};
 mkdir -p "${OUTDIR}";
 rm -rf "${OUTDIR}/wof.sqlite";
 
-# test coords
-LON=${LON:-'-73.990373'}
-LAT=${LAT:-'40.74421'}
+# default coords
+LON=${LON:-'50'}
+LAT=${LAT:-'1'}
 
 echo '-- init database --';
 time docker run -e 'DB=/out/wof.sqlite' -v "${OUTDIR}:/out" 'missinglink/wof-spatialite' init;
