@@ -2,22 +2,8 @@
 # set -e;
 export LC_ALL=en_US.UTF-8;
 
-# location of the input data directory
-INDIR=${INDIR:-"/whosonfirst-data"};
-if [ ! -d $INDIR ]; then
-  echo "input data dir does not exist";
-  exit 1;
-fi
-
-# location of the output data directory
-OUTDIR=${OUTDIR:-"/whosonfirst-data"};
-if [ ! -d $OUTDIR ]; then
-  echo "output data dir does not exist";
-  exit 1;
-fi
-
 # location of sqlite database file
-DB="$OUTDIR/wof.sqlite3";
+DB=${DB:-"wof.sqlite"};
 
 ## init - set up a new database
 function init(){
@@ -38,15 +24,6 @@ CREATE TABLE IF NOT EXISTS properties (
   blob TEXT,
   CONSTRAINT fk_place FOREIGN KEY (place_id) REFERENCES place(id)
 );
-
-CREATE TABLE grid (
- id INTEGER PRIMARY KEY AUTOINCREMENT,
- place_id INTEGER NOT NULL,
- CONSTRAINT fk_place FOREIGN KEY (place_id) REFERENCES place(id)
-);
-CREATE INDEX IF NOT EXISTS place_id_idx ON grid(place_id);
-SELECT AddGeometryColumn('grid', 'geom', 4326, 'MULTIPOLYGON', 'XY');
-SELECT CreateSpatialIndex('grid', 'geom');
 SQL
 
 # set file permissions
@@ -115,36 +92,113 @@ UPDATE place SET geom = SimplifyPreserveTopology( geom, $1 );
 SQL
 }
 
-## grid - create a grid cutout for a 1deg x 1deg section
-## $1: minLat: eg. '-180'
-## $2: minLon: eg. '-90'
-## $3: size: eg. '1'
-function grid(){
-echo 'grid' "$1" "$2" "($1+$3)" "($2+$3)";
+## tile_init - initialize the tiles table by copying records from the place table
+function tile_init(){
+  sqlite3 --init 'init.sql' ${DB} <<SQL
+CREATE TABLE tiles (
+ id INTEGER PRIMARY KEY AUTOINCREMENT,
+ wofid INTEGER NOT NULL,
+ level INTEGER NOT NULL,
+ complexity INTEGER
+);
+CREATE INDEX IF NOT EXISTS wofid_idx ON tiles(wofid);
+CREATE INDEX IF NOT EXISTS level_idx ON tiles(level);
 
-sqlite3 --init 'init.sql' "$DB" <<SQL
-INSERT INTO grid (id, place_id, geom)
-SELECT NULL, id, CastToMultiPolygon(Intersection(geom, BuildMbr($1, $2, ($1+$3), ($2+$3), 4326))) as piece
-FROM place
-WHERE id IN (
-  SELECT pkid FROM idx_place_geom
-  WHERE pkid MATCH RTreeIntersects( $1, $2, $1+$3, $2+$3 )
-)
-AND piece IS NOT NULL;
+.output /dev/null
+SELECT AddGeometryColumn('tiles', 'geom', 4326, 'MULTIPOLYGON', 'XY');
+SELECT CreateSpatialIndex('tiles', 'geom');
+.output stdout
+
+SELECT 'Initial Load';
+INSERT INTO tiles (id, wofid, level, geom)
+  SELECT NULL, id, 0, CastToMultiPolygon(geom) FROM place;
+
+UPDATE tiles
+SET complexity = ST_NPoints( geom )
+WHERE complexity IS NULL;
 SQL
 }
 
-# grid_all - create multiple grid sections
-## $1: minLat: eg. '-180'
-## $2: minLon: eg. '-90'
-## $3: maxLat: eg. '179'
-## $4: maxLon: eg. '89'
-## $5: size: eg. '1'
-function grid_all(){
-  for y in $(seq "$2" "$5" "$4"); do
-    for x in $(seq "$1" "$5" "$3"); do
-      grid "$x" "$y" "$5";
-    done
+## tile - reduce records in tiles table in to quarters
+## $1: level - level to target: eg. '0'
+## $2: complexity - maximum number of points allowed per level: eg. '200'
+function tile(){
+  sqlite3 --init 'init.sql' ${DB} <<SQL
+SELECT
+  printf('Level $1 (%d/%d)',
+  (SELECT COUNT(*) FROM tiles WHERE level = $1 AND complexity > $2),
+  (SELECT COUNT(*) FROM tiles WHERE level = $1)
+);
+
+-- SELECT 'Top Left';
+INSERT INTO tiles (id, wofid, level, geom)
+  SELECT NULL, wofid, level+1, CastToMultiPolygon( Intersection( geom, BuildMbr(
+    MbrMinX( geom ),
+    MbrMinY( geom ),
+    MbrMinX( geom ) + (( MbrMaxX( geom ) - MbrMinX( geom )) / 2),
+    MbrMinY( geom ) + (( MbrMaxY( geom ) - MbrMinY( geom )) / 2)
+  ))) AS quad
+  FROM tiles
+  WHERE level = $1
+  AND complexity > $2
+  AND quad IS NOT NULL;
+
+-- SELECT 'Top Right';
+INSERT INTO tiles (id, wofid, level, geom)
+  SELECT NULL, wofid, level+1, CastToMultiPolygon( Intersection( geom, BuildMbr(
+    MbrMinX( geom ) + (( MbrMaxX( geom ) - MbrMinX( geom )) / 2),
+    MbrMinY( geom ),
+    MbrMaxX( geom ),
+    MbrMinY( geom ) + (( MbrMaxY( geom ) - MbrMinY( geom )) / 2)
+  ))) AS quad
+  FROM tiles
+  WHERE level = $1
+  AND complexity > $2
+  AND quad IS NOT NULL;
+
+-- SELECT 'Bottom Left';
+INSERT INTO tiles (id, wofid, level, geom)
+  SELECT NULL, wofid, level+1, CastToMultiPolygon( Intersection( geom, BuildMbr(
+    MbrMinX( geom ),
+    MbrMinY( geom ) + (( MbrMaxY( geom ) - MbrMinY( geom )) / 2),
+    MbrMinX( geom ) + (( MbrMaxX( geom ) - MbrMinX( geom )) / 2),
+    MbrMaxY( geom )
+  ))) AS quad
+  FROM tiles
+  WHERE level = $1
+  AND complexity > $2
+  AND quad IS NOT NULL;
+
+-- SELECT 'Bottom Right';
+INSERT INTO tiles (id, wofid, level, geom)
+  SELECT NULL, wofid, level+1, CastToMultiPolygon( Intersection( geom, BuildMbr(
+    MbrMinX( geom ) + (( MbrMaxX( geom ) - MbrMinX( geom )) / 2),
+    MbrMinY( geom ) + (( MbrMaxY( geom ) - MbrMinY( geom )) / 2),
+    MbrMaxX( geom ),
+    MbrMaxY( geom )
+  ))) AS quad
+  FROM tiles
+  WHERE level = $1
+  AND complexity > $2
+  AND quad IS NOT NULL;
+
+-- SELECT 'Delete rows';
+DELETE FROM tiles
+WHERE level = $1
+AND complexity > $2;
+
+UPDATE tiles
+SET complexity = ST_NPoints( geom )
+WHERE complexity IS NULL;
+SQL
+}
+
+# tile_all - recursively cut tiles in to quads
+## $1: maxlevel - maximum level to target: eg. '50'
+## $2: complexity - maximum number of points allowed per level: eg. '200'
+function tile_all(){
+  for i in $(seq 0 "$1"); do
+    tile $i $2;
   done
 }
 
@@ -176,21 +230,22 @@ AND within( MakePoint( $1, $2, 4326 ), geom );
 SQL
 }
 
-## pipturbo - point-in-polygon test optimized using grid index
+## piptile - point-in-polygon test optimized using tile index
 ## $1: longitude: eg. '151.5942043'
 ## $2: latitude: eg. '-33.013441'
-function pipturbo(){
+function piptile(){
   sqlite3 --init 'init.sql' ${DB} <<SQL
 .timer on
 
 SELECT * FROM place
 WHERE id IN (
-  SELECT place_id FROM grid
+  SELECT wofid
+  FROM tiles
   WHERE id IN (
-    SELECT pkid FROM idx_grid_geom
+    SELECT pkid FROM idx_tiles_geom
     WHERE pkid MATCH RTreeIntersects( $1, $2, $1, $2 )
   )
-  AND Intersects( grid.geom, MakePoint( $1, $2, 4326 ) )
+  AND INTERSECTS( tiles.geom, MakePoint( $1, $2, 4326 ) )
 );
 SQL
 }
@@ -283,11 +338,12 @@ case "$1" in
 'index_all') index_all "$2";;
 'fixify') fixify;;
 'simplify') simplify "$2";;
-'grid') grid "$2" "$3";;
-'grid_all') grid_all "$2" "$3" "$4" "$5" "$6";;
+'tile_init') tile_init;;
+'tile') tile "$2" "$3";;
+'tile_all') tile_all "$2" "$3";;
 'pip') pip "$2" "$3";;
 'pipfast') pipfast "$2" "$3";;
-'pipturbo') pipturbo "$2" "$3";;
+'piptile') piptile "$2" "$3";;
 'contains') contains "$2";;
 'within') within "$2";;
 'extract') extract "$2" "$3";;
