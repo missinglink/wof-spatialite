@@ -30,7 +30,6 @@ ENV PATH="${PATH}:/usr/local/go/bin:${GOPATH}/bin"
 RUN go get github.com/shaxbee/go-spatialite
 
 # set up server
-RUN go get github.com/mattn/go-sqlite3
 COPY ./server.go /usr/src/repos/wof-spatialite
 RUN go build server.go
 
