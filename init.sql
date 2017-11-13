@@ -1,10 +1,14 @@
 .output /dev/null
-PRAGMA foreign_keys=OFF;
-PRAGMA page_size=4096;
-PRAGMA cache_size=-2000;
 PRAGMA synchronous=OFF;
 PRAGMA journal_mode=OFF;
+PRAGMA foreign_keys=OFF;
+PRAGMA count_changes=OFF;
 PRAGMA temp_store=MEMORY;
+PRAGMA locking_mode=EXCLUSIVE;
 PRAGMA threads=8;
+PRAGMA page_size=4096;
+PRAGMA cache_size=700000;
+PRAGMA default_cache_size=700000;
+PRAGMA mmap_size=268435456;
 SELECT load_extension('mod_spatialite');
 .output stdout
