@@ -13,8 +13,9 @@ import (
 )
 
 type result struct {
-	ID   string
-	Name string
+	ID        uint64 `json:"id"`
+	Name      string `json:"name"`
+	Placetype string `json:"placetype"`
 }
 
 var db = func() *sql.DB {
@@ -40,7 +41,7 @@ var db = func() *sql.DB {
 
 var query = func() *sql.Stmt {
 	_query, err := db.Prepare(strings.TrimSpace(`
-	    SELECT id, name FROM place
+	    SELECT id, name, layer FROM place
 	    WHERE id IN (
 	      SELECT wofid
 	      FROM tiles
@@ -79,10 +80,11 @@ func pip(w http.ResponseWriter, r *http.Request) {
 	// fmt.Printf("took %s\n", elapsed)
 
 	var res []result
-	var id, name string
+	var id uint64
+	var name, layer string
 	for rows.Next() {
-		rows.Scan(&id, &name)
-		res = append(res, result{ID: id, Name: name})
+		rows.Scan(&id, &name, &layer)
+		res = append(res, result{ID: id, Name: name, Placetype: layer})
 	}
 
 	jsonValue, err := json.Marshal(res)
