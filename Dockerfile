@@ -20,6 +20,20 @@ ENV OUTDIR "/out"
 WORKDIR /usr/src/repos/wof-spatialite
 ENTRYPOINT [ "./spatialite.sh" ]
 
+# install golang
+ENV GOPATH=/usr/src/.go
+RUN wget -O- https://redirector.gvt1.com/edgedl/go/go1.9.2.linux-amd64.tar.gz | tar -C /usr/local -xzf -
+RUN mkdir -p "${GOPATH}"
+ENV PATH="${PATH}:/usr/local/go/bin:${GOPATH}/bin"
+
+# golang modules
+RUN go get github.com/shaxbee/go-spatialite
+
+# set up server
+RUN go get github.com/mattn/go-sqlite3
+COPY ./server.go /usr/src/repos/wof-spatialite
+RUN go build server.go
+
 # copy source code
 COPY ./init.sql /usr/src/repos/wof-spatialite
 COPY ./spatialite.sh /usr/src/repos/wof-spatialite

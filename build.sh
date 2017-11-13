@@ -18,22 +18,25 @@ LON=${LON:-'50'}
 LAT=${LAT:-'1'}
 
 echo '-- init database --'
-time docker run -e 'DB=/out/wof.sqlite' -v "${OUTDIR}:/out" 'missinglink/wof-spatialite' init
+docker run --rm -it -e 'DB=/out/wof.sqlite' -v "${OUTDIR}:/out" 'missinglink/wof-spatialite' init
 
 echo '-- import wof --'
-time docker run -e 'DB=/out/wof.sqlite' -v "${INDIR}:/in" -v "${OUTDIR}:/out" 'missinglink/wof-spatialite' index_all '/in'
+docker run --rm -it -e 'DB=/out/wof.sqlite' -v "${INDIR}:/in" -v "${OUTDIR}:/out" 'missinglink/wof-spatialite' index_all '/in'
 
 echo '-- repair geometries --'
-time docker run -e 'DB=/out/wof.sqlite' -v "${OUTDIR}:/out" 'missinglink/wof-spatialite' fixify
+docker run --rm -it -e 'DB=/out/wof.sqlite' -v "${OUTDIR}:/out" 'missinglink/wof-spatialite' fixify
 
 # echo '-- simplify geometries --'
-# time docker run -e 'DB=/out/wof.sqlite' -v "${OUTDIR}:/out" 'missinglink/wof-spatialite' simplify '0.1'
+# docker run --rm -it -e 'DB=/out/wof.sqlite' -v "${OUTDIR}:/out" 'missinglink/wof-spatialite' simplify '0.1'
 
 echo '-- create tiles --'
-time docker run -e 'DB=/out/wof.sqlite' -v "${OUTDIR}:/out" 'missinglink/wof-spatialite' tile_init
-time docker run -e 'DB=/out/wof.sqlite' -v "${OUTDIR}:/out" 'missinglink/wof-spatialite' tile_all "${LEVEL}" "${COMPLEXITY}"
+docker run --rm -it -e 'DB=/out/wof.sqlite' -v "${OUTDIR}:/out" 'missinglink/wof-spatialite' tile_init
+docker run --rm -it -e 'DB=/out/wof.sqlite' -v "${OUTDIR}:/out" 'missinglink/wof-spatialite' tile_all "${LEVEL}" "${COMPLEXITY}"
 
 echo '-- run point-in-polygon tests --'
-docker run -e 'DB=/out/wof.sqlite' -v "${OUTDIR}:/out" 'missinglink/wof-spatialite' pip "${LON}" "${LAT}"
-docker run -e 'DB=/out/wof.sqlite' -v "${OUTDIR}:/out" 'missinglink/wof-spatialite' pipfast "${LON}" "${LAT}"
-docker run -e 'DB=/out/wof.sqlite' -v "${OUTDIR}:/out" 'missinglink/wof-spatialite' piptile "${LON}" "${LAT}"
+docker run --rm -it -e 'DB=/out/wof.sqlite' -v "${OUTDIR}:/out" 'missinglink/wof-spatialite' pip "${LON}" "${LAT}"
+docker run --rm -it -e 'DB=/out/wof.sqlite' -v "${OUTDIR}:/out" 'missinglink/wof-spatialite' pipfast "${LON}" "${LAT}"
+docker run --rm -it -e 'DB=/out/wof.sqlite' -v "${OUTDIR}:/out" 'missinglink/wof-spatialite' piptile "${LON}" "${LAT}"
+
+echo '-- run server --'
+docker run --rm -it -e 'DB=/out/wof.sqlite' -v "${OUTDIR}:/out" -p '8080:8080' 'missinglink/wof-spatialite' server

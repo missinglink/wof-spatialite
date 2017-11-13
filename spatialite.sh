@@ -347,6 +347,7 @@ case "$1" in
 'contains') contains "$2";;
 'within') within "$2";;
 'extract') extract "$2" "$3";;
+'server') ./server "${DB}";;
 *)
   BR='-------------------------------------------------------------------------'
   printf "%s\n" $BR
