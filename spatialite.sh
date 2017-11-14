@@ -330,6 +330,45 @@ SQL
 #
 # DETACH DATABASE 'source';
 
+
+## bundle_download - copy database records within id: $2
+## $1: bundle name: eg. 'country'
+## $2: output dir: eg. '/out/country'
+function bundle_download {
+  BUNDLE="wof-${1}-latest-bundle"; COMPRESSED="${BUNDLE}.tar.bz2";
+  echo "download ${COMPRESSED}";
+  [ -d "${2}" ] || mkdir -p "${2}"
+  curl -s "https://whosonfirst.mapzen.com/bundles/${COMPRESSED}" |\
+    tar -xj --strip-components='1' --exclude='README.txt' -C "${DATA_DIR}";
+}
+
+## ogr_simplify - use ogr2ogr to simplify geometry
+## $1: geojson file name: eg. '1.geojson'
+## $2: Douglas-Peuker tolerance: eg. '0.0001'
+function ogr_simplify {
+  echo "ogr_simplify: ${1} ${2}";
+  ogr2ogr -f GeoJSON -lco 'COORDINATE_PRECISION=7' '/vsistdout/' "${1}" -simplify "${2}" | jq -c -M '.features[0]' > "${1}.tmp"
+  if [ ${PIPESTATUS[0]} -ne 0 ]; then
+    echo "simplification failed: ${1}"
+    rm -f "${1}.tmp"
+  else
+    mv "${1}.tmp" "${1}"
+  fi
+}
+
+# export ogr_simplify function
+export -f ogr_simplify
+
+## ogr_simplify - use ogr2ogr to simplify a directory of geometries
+## $1: geojson directory name: eg. '/data'
+## $2: Douglas-Peuker tolerance: eg. '0.0001'
+function ogr_simplify_dir(){
+  # simplify data (skip files under 20kb)
+  find "${1}" -type f -size +20k -name '*.geojson' |\
+    sed -e "s/$/ ${2}/" |\
+      parallel --no-notice --line-buffer --colsep ' ' ogr_simplify
+}
+
 # cli runner
 case "$1" in
 'init') init;;
@@ -348,6 +387,9 @@ case "$1" in
 'within') within "$2";;
 'extract') extract "$2" "$3";;
 'server') ./server "${DB}";;
+'bundle_download') bundle_download "$2" "$3";;
+'ogr_simplify') ogr_simplify "$2" "$3";;
+'ogr_simplify_dir') ogr_simplify_dir "$2" "$3";;
 *)
   BR='-------------------------------------------------------------------------'
   printf "%s\n" $BR
