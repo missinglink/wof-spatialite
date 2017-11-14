@@ -4,7 +4,7 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV LD_LIBRARY_PATH=/lib:/usr/lib:/usr/local/lib;
 
 # dependencies
-# RUN apt-get update && apt-get install -y python sqlite3
+RUN apt-get update && apt-get install --no-install-recommends -y parallel jq && rm -rf /var/lib/apt/lists/*
 
 # create app directory
 RUN mkdir -p /usr/src/repos/wof-spatialite
@@ -16,13 +16,12 @@ VOLUME "/out"
 ENV INDIR "/in"
 ENV OUTDIR "/out"
 
-# set entry point
+# set working dir
 WORKDIR /usr/src/repos/wof-spatialite
-ENTRYPOINT [ "./spatialite.sh" ]
 
 # install golang
 ENV GOPATH=/usr/src/.go
-RUN wget -O- https://redirector.gvt1.com/edgedl/go/go1.9.2.linux-amd64.tar.gz | tar -C /usr/local -xzf -
+RUN wget -qO- https://redirector.gvt1.com/edgedl/go/go1.9.2.linux-amd64.tar.gz | tar -C /usr/local -xzf -
 RUN mkdir -p "${GOPATH}"
 ENV PATH="${PATH}:/usr/local/go/bin:${GOPATH}/bin"
 
@@ -36,3 +35,6 @@ RUN go build server.go
 # copy source code
 COPY ./init.sql /usr/src/repos/wof-spatialite
 COPY ./spatialite.sh /usr/src/repos/wof-spatialite
+
+# set entry point
+ENTRYPOINT [ "./spatialite.sh" ]
