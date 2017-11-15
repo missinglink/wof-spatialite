@@ -110,6 +110,8 @@ func pip(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	fs := http.FileServer(http.Dir("demo"))
+	http.Handle("/demo/", http.StripPrefix("/demo/", fs))
 	http.HandleFunc("/pip", pip)
 	fmt.Println("listening on port 8080")
 	err := http.ListenAndServe(":8080", nil)

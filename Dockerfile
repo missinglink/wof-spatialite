@@ -36,5 +36,8 @@ RUN go build server.go
 COPY ./init.sql /usr/src/repos/wof-spatialite
 COPY ./spatialite.sh /usr/src/repos/wof-spatialite
 
+# copy demo files
+COPY ./demo/ /usr/src/repos/wof-spatialite
+
 # set entry point
 ENTRYPOINT [ "./spatialite.sh" ]
