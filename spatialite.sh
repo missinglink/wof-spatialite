@@ -339,7 +339,7 @@ function bundle_download {
   echo "download ${COMPRESSED}";
   [ -d "${2}" ] || mkdir -p "${2}"
   curl -s "https://whosonfirst.mapzen.com/bundles/${COMPRESSED}" |\
-    tar -xj --strip-components='1' --exclude='README.txt' -C "${DATA_DIR}";
+    tar -xj --strip-components='1' --exclude='README.txt' -C "${2}";
 }
 
 ## ogr_simplify - use ogr2ogr to simplify geometry
