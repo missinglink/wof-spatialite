@@ -5,7 +5,7 @@ new L.Control.Zoom({ position: 'bottomleft' }).addTo(map);
 
 // click handler
 // map.on('click', function(e){ update( e.latlng ); });
-map.on('dragend', function(e){ update(); });
+// map.on('dragend', function(e){ update(); });
 map.on('moveend', function(e){ update(); });
 map.on('resize', function(e){ update(); });
 map.on('load', function(e){ update(); });
