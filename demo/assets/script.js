@@ -37,6 +37,7 @@ var wof_order = [
   "region",
   "macrocounty",
   "county",
+  "localadmin",
   "locality",
   "borough",
   "macrohood",
