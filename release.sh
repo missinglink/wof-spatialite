@@ -32,7 +32,7 @@ function build(){
     docker run --rm -v "${BUNDLE_DIR}/${1}:/in" 'missinglink/wof-spatialite' ogr_simplify_dir /in 0.0001
 
     echo '-- remove processed files --'
-    rm -rf "${BUNDLE_DIR}/${1}/*"
+    rm -rf "${BUNDLE_DIR}/${1}"
   fi
 
   # create database file
@@ -69,3 +69,6 @@ if [ ! -f "${DB_DIR}/wof.sqlite" ]; then
     docker run --rm -e "DB=/out/wof.sqlite" -v "${DB_DIR}:/out" 'missinglink/wof-spatialite' merge "/out/${PT}.sqlite"
   done
 fi
+
+echo '-- remove bundle dir --'
+rm -rf "${BUNDLE_DIR}"
