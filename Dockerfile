@@ -37,7 +37,7 @@ COPY ./init.sql /usr/src/repos/wof-spatialite
 COPY ./spatialite.sh /usr/src/repos/wof-spatialite
 
 # copy demo files
-COPY ./demo/ /usr/src/repos/wof-spatialite
+COPY ./demo /usr/src/repos/wof-spatialite/demo
 
 # set entry point
 ENTRYPOINT [ "./spatialite.sh" ]

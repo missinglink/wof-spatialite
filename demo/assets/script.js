@@ -61,7 +61,7 @@ function update( latlng ){
       html.push("<table>");
 
       data.sort( function( a, b ){
-        return wof_order.indexOf( a ) - wof_order.indexOf( b );
+        return wof_order.indexOf( a.placetype ) - wof_order.indexOf( b.placetype );
       });
 
       data.forEach( function( place ){
