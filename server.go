@@ -64,22 +64,23 @@ WHERE id IN (
 	return _query
 }()
 
-func parseCoord(m map[string][]string, k string) float64 {
-	var coord float64
+// parseFloat - convert form
+func parseFloat(m map[string][]string, k string) float64 {
+	var num float64
 	if v, ok := m[k]; ok {
 		i, err := strconv.ParseFloat(v[0], 64)
 		if nil == err {
-			coord = i
+			num = i
 		}
 	}
-	return coord
+	return num
 }
 
 func pip(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 
-	var lon = sql.Named("lon", parseCoord(r.Form, "lon"))
-	var lat = sql.Named("lat", parseCoord(r.Form, "lat"))
+	var lon = sql.Named("lon", parseFloat(r.Form, "lon"))
+	var lat = sql.Named("lat", parseFloat(r.Form, "lat"))
 
 	// start := time.Now()
 	rows, err := query.Query(lon, lat)
@@ -104,6 +105,7 @@ func pip(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.Header().Set("Cache-Control", "public, max-age=120")
 	w.Write(jsonValue)
 }
 
