@@ -8,7 +8,9 @@ DB=${DB:-"wof.sqlite"};
 ## init - set up a new database
 function init(){
   sqlite3 --init 'init.sql' ${DB} <<SQL
+.output /dev/null
 SELECT InitSpatialMetaData(1);
+.output stdout
 
 CREATE TABLE IF NOT EXISTS place (
   id INTEGER NOT NULL PRIMARY KEY,
@@ -16,18 +18,47 @@ CREATE TABLE IF NOT EXISTS place (
   layer TEXT
 );
 CREATE INDEX IF NOT EXISTS layer_idx ON place(layer);
+
+.output /dev/null
 SELECT AddGeometryColumn('place', 'geom', 4326, 'GEOMETRY', 'XY', 1);
 SELECT CreateSpatialIndex('place', 'geom');
+.output stdout
 
 CREATE TABLE IF NOT EXISTS properties (
   place_id INTEGER PRIMARY KEY NOT NULL,
   blob TEXT,
   CONSTRAINT fk_place FOREIGN KEY (place_id) REFERENCES place(id)
 );
+
+CREATE TABLE tiles (
+ id INTEGER PRIMARY KEY AUTOINCREMENT,
+ wofid INTEGER NOT NULL,
+ level INTEGER NOT NULL,
+ complexity INTEGER
+);
+CREATE INDEX IF NOT EXISTS wofid_idx ON tiles(wofid);
+CREATE INDEX IF NOT EXISTS level_idx ON tiles(level);
+
+.output /dev/null
+SELECT AddGeometryColumn('tiles', 'geom', 4326, 'MULTIPOLYGON', 'XY');
+SELECT CreateSpatialIndex('tiles', 'geom');
+.output stdout
 SQL
 
 # set file permissions
 chmod 0666 "$DB";
+}
+
+## merge - merge tables from an external database in to the main db
+## $1: external db path: eg. '/tmp/external.sqlite'
+function merge(){
+  sqlite3 --init 'init.sql' ${DB} <<SQL
+ATTACH DATABASE '$1' AS ext;
+INSERT INTO main.place( id, name, layer, geom ) SELECT id, name, layer, geom FROM ext.place;
+INSERT INTO main.properties( place_id, blob ) SELECT place_id, blob FROM ext.properties;
+INSERT INTO main.tiles(id, wofid, level, complexity, geom) SELECT NULL, wofid, level, complexity, geom FROM ext.tiles;
+DETACH DATABASE ext;
+SQL
 }
 
 ## json - print a json property from file
@@ -92,23 +123,9 @@ UPDATE place SET geom = SimplifyPreserveTopology( geom, $1 );
 SQL
 }
 
-## tile_init - initialize the tiles table by copying records from the place table
+## tile_init - copy records from the place table to the tiles table
 function tile_init(){
   sqlite3 --init 'init.sql' ${DB} <<SQL
-CREATE TABLE tiles (
- id INTEGER PRIMARY KEY AUTOINCREMENT,
- wofid INTEGER NOT NULL,
- level INTEGER NOT NULL,
- complexity INTEGER
-);
-CREATE INDEX IF NOT EXISTS wofid_idx ON tiles(wofid);
-CREATE INDEX IF NOT EXISTS level_idx ON tiles(level);
-
-.output /dev/null
-SELECT AddGeometryColumn('tiles', 'geom', 4326, 'MULTIPOLYGON', 'XY');
-SELECT CreateSpatialIndex('tiles', 'geom');
-.output stdout
-
 SELECT 'Initial Load';
 INSERT INTO tiles (id, wofid, level, geom)
   SELECT NULL, id, 0, CastToMultiPolygon(geom) FROM place;
@@ -193,7 +210,7 @@ WHERE complexity IS NULL;
 SQL
 }
 
-# tile_all - recursively cut tiles in to quads
+## tile_all - recursively cut tiles in to quads
 ## $1: maxlevel - maximum level to target: eg. '50'
 ## $2: complexity - maximum number of points allowed per level: eg. '200'
 function tile_all(){
@@ -343,7 +360,7 @@ function bundle_download {
 }
 
 ## ogr_simplify - use ogr2ogr to simplify geometry
-## $1: geojson file name: eg. '1.geojson'
+## $1: geojson file name: eg. '/data/1.geojson'
 ## $2: Douglas-Peuker tolerance: eg. '0.0001'
 function ogr_simplify {
   echo "ogr_simplify: ${1} ${2}";
@@ -359,7 +376,7 @@ function ogr_simplify {
 # export ogr_simplify function
 export -f ogr_simplify
 
-## ogr_simplify - use ogr2ogr to simplify a directory of geometries
+## ogr_simplify_dir - use ogr2ogr to simplify a directory of geometries
 ## $1: geojson directory name: eg. '/data'
 ## $2: Douglas-Peuker tolerance: eg. '0.0001'
 function ogr_simplify_dir(){
@@ -372,6 +389,7 @@ function ogr_simplify_dir(){
 # cli runner
 case "$1" in
 'init') init;;
+'merge') merge "$2";;
 'json') json "$2" "$3";;
 'index') index "$2";;
 'index_all') index_all "$2";;
