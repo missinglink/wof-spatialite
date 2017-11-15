@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 
 	_ "github.com/shaxbee/go-spatialite" // required database driver
@@ -31,6 +32,8 @@ var db = func() *sql.DB {
 		panic(err)
 	}
 
+	_db.SetMaxOpenConns(1)
+
 	// enable mmap
 	_db.Exec("PRAGMA mmap_size=268435456")
 	_db.Exec("PRAGMA page_size=65536")
@@ -40,18 +43,20 @@ var db = func() *sql.DB {
 }()
 
 var query = func() *sql.Stmt {
-	_query, err := db.Prepare(strings.TrimSpace(`
-	    SELECT id, name, layer FROM place
-	    WHERE id IN (
-	      SELECT wofid
-	      FROM tiles
-	      WHERE id IN (
-	        SELECT pkid FROM idx_tiles_geom
-	        WHERE pkid MATCH RTreeIntersects(:lon, :lat, :lon, :lat)
-	      )
-	      AND INTERSECTS( tiles.geom, MakePoint(:lon, :lat, 4326) )
-	    );
-	  `))
+
+	var sql = strings.TrimSpace(`
+SELECT id, name, layer FROM place
+WHERE id IN (
+  SELECT wofid
+  FROM tiles
+  WHERE rowid IN (
+    SELECT pkid FROM idx_tiles_geom
+    WHERE pkid MATCH RTreeIntersects(:lon, :lat, :lon, :lat)
+  )
+  AND WITHIN( ST_Point(:lon, :lat), tiles.geom )
+)`)
+
+	_query, err := db.Prepare(sql)
 	if err != nil {
 		panic(err)
 	}
@@ -59,19 +64,25 @@ var query = func() *sql.Stmt {
 	return _query
 }()
 
+func parseCoord(m map[string][]string, k string) float64 {
+	var coord float64
+	if v, ok := m[k]; ok {
+		i, err := strconv.ParseFloat(v[0], 64)
+		if nil == err {
+			coord = i
+		}
+	}
+	return coord
+}
+
 func pip(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 
-	var lat, lon string
-	if val, ok := r.Form["lat"]; ok {
-		lat = val[0]
-	}
-	if val, ok := r.Form["lon"]; ok {
-		lon = val[0]
-	}
+	var lon = sql.Named("lon", parseCoord(r.Form, "lon"))
+	var lat = sql.Named("lat", parseCoord(r.Form, "lat"))
 
 	// start := time.Now()
-	rows, err := query.Query(sql.Named("lon", lon), sql.Named("lat", lat))
+	rows, err := query.Query(lon, lat)
 	defer rows.Close()
 	if err != nil {
 		log.Println(err)
