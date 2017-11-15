@@ -71,6 +71,12 @@ SELECT json_extract(( SELECT json FROM file ), '$2' );
 SQL
 }
 
+## sql - run an arbitrary sql script
+## $1: sql: eg. 'VACUUM'
+function sql(){
+  echo "${1};" | sqlite3 --init 'init.sql' ${DB}
+}
+
 ## index - add a geojson polygon to the database
 ## $1: geojson path: eg. '/tmp/test.geojson'
 function index(){
@@ -391,6 +397,7 @@ case "$1" in
 'init') init;;
 'merge') merge "$2";;
 'json') json "$2" "$3";;
+'sql') sql "$2";;
 'index') index "$2";;
 'index_all') index_all "$2";;
 'fixify') fixify;;
