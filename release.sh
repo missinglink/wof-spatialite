@@ -10,8 +10,8 @@ DB_DIR="/data/build/${TODAY}"
 BUNDLE_DIR="${DB_DIR}/bundles"
 
 # placetypes
-PLACETYPES=( 'neighbourhood' 'macrohood' 'borough' 'locality' 'localadmin' 'county' 'macrocounty' 'region'
-  'macroregion' 'disputed' 'dependency' 'country' 'empire' 'marinearea' 'continent' 'ocean' )
+PLACETYPES=( 'campus' 'microhood' 'neighbourhood' 'macrohood' 'borough' 'locality' 'localadmin' 'county' 'macrocounty' 'region'
+  'macroregion' 'disputed' 'dependency' 'country' 'empire' 'marinearea' 'continent' 'ocean' 'planet' )
 
 # ensure dirs exists
 mkdir -p "${BUNDLE_DIR}"
@@ -30,9 +30,6 @@ function build(){
 
     echo '-- simplify geometries --'
     docker run --rm -v "${BUNDLE_DIR}/${1}:/in" 'missinglink/wof-spatialite' ogr_simplify_dir /in 0.0001
-
-    echo '-- remove processed files --'
-    rm -rf "${BUNDLE_DIR}/${1}"
   fi
 
   # create database file
@@ -52,6 +49,9 @@ function build(){
 
     echo '-- vacuum --'
     docker run --rm -e "DB=/out/${1}.sqlite" -v "${DB_DIR}:/out" 'missinglink/wof-spatialite' sql 'VACUUM'
+
+    echo '-- remove processed files --'
+    docker run --rm -v "${BUNDLE_DIR}:/in" 'ubuntu:16.04' rm -rf "/in/${1}"
   fi
 }
 
@@ -72,3 +72,9 @@ fi
 
 echo '-- remove bundle dir --'
 rm -rf "${BUNDLE_DIR}"
+
+# compress all databases
+if type pigz >/dev/null
+  then find "${DB_DIR}" -type f -name '*.sqlite' | xargs pigz --best
+  else find "${DB_DIR}" -type f -name '*.sqlite' | xargs gzip --best
+fi
