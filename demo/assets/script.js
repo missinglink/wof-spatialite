@@ -42,7 +42,8 @@ var wof_order = [
   "borough",
   "macrohood",
   "neighbourhood",
-  "microhood"
+  "microhood",
+  "campus"
 ];
 
 function update( latlng ){

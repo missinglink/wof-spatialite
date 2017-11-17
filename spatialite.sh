@@ -88,18 +88,22 @@ CREATE TEMP TABLE file ( json TEXT );
 INSERT INTO file SELECT readfile('$1') AS json;
 
 INSERT INTO place ( id, name, layer, geom )
-VALUES (
-  json_extract(( SELECT json FROM file ), '$.properties."wof:id"'),
-  json_extract(( SELECT json FROM file ), '$.properties."wof:name"'),
-  json_extract(( SELECT json FROM file ), '$.properties."wof:placetype"'),
-  SetSRID( GeomFromGeoJSON( json_extract(( SELECT json FROM file ), '$.geometry') ), 4326 )
-);
+  SELECT
+    json_extract(json, '$.properties."wof:id"'),
+    json_extract(json, '$.properties."wof:name"'),
+    json_extract(json, '$.properties."wof:placetype"'),
+    SetSRID( GeomFromGeoJSON( json_extract(json, '$.geometry') ), 4326 )
+  FROM file
+  WHERE CAST(IFNULL(json_extract(json, '$.properties."mz:is_current"'), -1) AS text) != '0'
+  LIMIT 1;
 
 INSERT INTO properties ( place_id, blob )
-VALUES (
-  json_extract(( SELECT json FROM file ), '$.properties."wof:id"'),
-  json_extract(( SELECT json FROM file ), '$.properties')
-);
+  SELECT
+    json_extract(json, '$.properties."wof:id"'),
+    json_extract(json, '$.properties')
+  FROM file
+  WHERE CAST(IFNULL(json_extract(json, '$.properties."mz:is_current"'), -1) AS text) != '0'
+  LIMIT 1;
 
 DROP TABLE file;
 COMMIT;
