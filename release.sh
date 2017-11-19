@@ -50,6 +50,12 @@ function build(){
     echo '-- vacuum --'
     docker run --rm -e "DB=/out/${1}.sqlite" -v "${DB_DIR}:/out" 'missinglink/wof-spatialite' sql 'VACUUM'
 
+    echo '-- fix timestamps --'
+    docker run --rm -e "DB=/out/${1}.sqlite" -v "${DB_DIR}:/out" 'missinglink/wof-spatialite' sql 'UPDATE spatialite_history SET timestamp="0000-01-01T00:00:00.000Z"'
+    docker run --rm -e "DB=/out/${1}.sqlite" -v "${DB_DIR}:/out" 'missinglink/wof-spatialite' sql 'UPDATE geometry_columns_time SET last_insert="0000-01-01T00:00:00.000Z"'
+    docker run --rm -e "DB=/out/${1}.sqlite" -v "${DB_DIR}:/out" 'missinglink/wof-spatialite' sql 'UPDATE geometry_columns_time SET last_update="0000-01-01T00:00:00.000Z"'
+    docker run --rm -e "DB=/out/${1}.sqlite" -v "${DB_DIR}:/out" 'missinglink/wof-spatialite' sql 'UPDATE geometry_columns_time SET last_delete="0000-01-01T00:00:00.000Z"'
+
     echo '-- remove processed files --'
     docker run --rm -v "${BUNDLE_DIR}:/in" 'ubuntu:16.04' rm -rf "/in/${1}"
   fi
@@ -75,6 +81,6 @@ rm -rf "${BUNDLE_DIR}"
 
 # compress all databases
 if type pigz >/dev/null
-  then find "${DB_DIR}" -type f -name '*.sqlite' | xargs pigz --best
-  else find "${DB_DIR}" -type f -name '*.sqlite' | xargs gzip --best
+  then find "${DB_DIR}" -type f -name '*.sqlite' | xargs pigz -n -T --best
+  else find "${DB_DIR}" -type f -name '*.sqlite' | xargs gzip -n --best
 fi
