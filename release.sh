@@ -68,17 +68,17 @@ function build(){
 }
 
 # execute for each bundle (in parallel)
-for PT in "${BUNDLES[@]}"; do
-  build "${PT}" &
+for BUNDLE_NAME in "${BUNDLES[@]}"; do
+  build "${BUNDLE_NAME}" &
 done
 wait
 
 # merge all databases in to a single db
 if [ ! -f "${DB_DIR}/wof.sqlite" ]; then
   docker run --rm -e "DB=/out/wof.sqlite" -v "${DB_DIR}:/out" 'missinglink/wof-spatialite' init
-  for PT in "${BUNDLES[@]}"; do
-    echo "----- merge ${PT} -----"
-    docker run --rm -e "DB=/out/wof.sqlite" -v "${DB_DIR}:/out" 'missinglink/wof-spatialite' merge "/out/${PT}.sqlite"
+  for BUNDLE_NAME in "${BUNDLES[@]}"; do
+    echo "----- merge ${BUNDLE_NAME} -----"
+    docker run --rm -e "DB=/out/wof.sqlite" -v "${DB_DIR}:/out" 'missinglink/wof-spatialite' merge "/out/${BUNDLE_NAME}.sqlite"
   done
 fi
 
