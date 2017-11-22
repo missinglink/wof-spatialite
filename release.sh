@@ -1,4 +1,5 @@
 #!/bin/bash
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd );
 
 # tessellation options
 LEVEL=50
@@ -9,16 +10,21 @@ TODAY=`date +%Y-%m-%d`
 DB_DIR="/data/build/${TODAY}"
 BUNDLE_DIR="${DB_DIR}/bundles"
 
-# placetypes
-PLACETYPES=( 'campus' 'microhood' 'neighbourhood' 'macrohood' 'borough' 'locality' 'localadmin' 'county' 'macrocounty' 'region'
-  'macroregion' 'disputed' 'dependency' 'country' 'empire' 'marinearea' 'continent' 'ocean' 'planet' )
+# create a bundle index file if one doesn't already exist
+[ -f "${DIR}/bundles.txt" ] ||\
+  curl -s 'https://whosonfirst.mapzen.com/bundles/index.txt' |\
+    grep -Po 'wof-\K(.*)(?=-latest-bundle\.tar\.bz)' |\
+      grep -vP 'venue|constituency|intersection' > "${DIR}/bundles.txt"
+
+# Load bundles list into array
+readarray -t BUNDLES < "${DIR}/bundles.txt"
 
 # ensure dirs exists
 mkdir -p "${BUNDLE_DIR}"
 mkdir -p "${DB_DIR}"
 
 function build(){
-  echo "----- placetype ${1} -----"
+  echo "----- bundle ${1} -----"
 
   # download and simplify bundle
   if [ ! -d "${BUNDLE_DIR}/${1}" ]; then
@@ -61,8 +67,8 @@ function build(){
   fi
 }
 
-# execute for each placetype (in parallel)
-for PT in "${PLACETYPES[@]}"; do
+# execute for each bundle (in parallel)
+for PT in "${BUNDLES[@]}"; do
   build "${PT}" &
 done
 wait
@@ -70,7 +76,7 @@ wait
 # merge all databases in to a single db
 if [ ! -f "${DB_DIR}/wof.sqlite" ]; then
   docker run --rm -e "DB=/out/wof.sqlite" -v "${DB_DIR}:/out" 'missinglink/wof-spatialite' init
-  for PT in "${PLACETYPES[@]}"; do
+  for PT in "${BUNDLES[@]}"; do
     echo "----- merge ${PT} -----"
     docker run --rm -e "DB=/out/wof.sqlite" -v "${DB_DIR}:/out" 'missinglink/wof-spatialite' merge "/out/${PT}.sqlite"
   done
