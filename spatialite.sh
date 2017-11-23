@@ -396,6 +396,16 @@ function ogr_simplify_dir(){
       parallel --no-notice --line-buffer --colsep ' ' ogr_simplify
 }
 
+## remove_point_geoms - remove all geojson files with a reported area of 0.0
+## $1: geojson directory name: eg. '/data'
+function remove_point_geoms(){
+  find "${1}" -type f -name '*.geojson' |\
+    while IFS= read -r FILENAME; do
+      grep --files-with-match '"geom:area":[\s|"]*0\.0' "${FILENAME}" || true;
+    done |\
+      xargs --no-run-if-empty rm
+}
+
 # cli runner
 case "$1" in
 'init') init;;
@@ -419,6 +429,7 @@ case "$1" in
 'bundle_download') bundle_download "$2" "$3";;
 'ogr_simplify') ogr_simplify "$2" "$3";;
 'ogr_simplify_dir') ogr_simplify_dir "$2" "$3";;
+'remove_point_geoms') remove_point_geoms "$2";;
 *)
   BR='-------------------------------------------------------------------------'
   printf "%s\n" $BR

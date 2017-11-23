@@ -34,6 +34,9 @@ function build(){
     echo '-- download bundle --'
     docker run --rm -v "${BUNDLE_DIR}/${1}:/in" 'missinglink/wof-spatialite' bundle_download "${1}" /in
 
+    echo '-- remove empty (point) geometries'
+    docker run --rm -v "${BUNDLE_DIR}/${1}:/in" 'missinglink/wof-spatialite' remove_point_geoms /in
+
     echo '-- simplify geometries --'
     docker run --rm -v "${BUNDLE_DIR}/${1}:/in" 'missinglink/wof-spatialite' ogr_simplify_dir /in 0.0001
   fi
