@@ -401,7 +401,7 @@ function ogr_simplify_dir(){
 function remove_point_geoms(){
   find "${1}" -type f -name '*.geojson' |\
     while IFS= read -r FILENAME; do
-      grep --files-with-match '"geom:area":[\s|"]*0\.0' "${FILENAME}" || true;
+      grep --files-with-match '"geom:area":[\s|"]*0[\.0]\+[\s|"]*,' "${FILENAME}" || true;
     done |\
       xargs --no-run-if-empty rm
 }
