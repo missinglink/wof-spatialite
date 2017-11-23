@@ -14,7 +14,7 @@ BUNDLE_DIR="${DB_DIR}/bundles"
 [ -f "${DIR}/bundles.txt" ] ||\
   curl -s 'https://whosonfirst.mapzen.com/bundles/index.txt' |\
     grep -Po 'wof-\K(.*)(?=-latest-bundle\.tar\.bz)' |\
-      grep -vP 'venue|constituency|intersection' > "${DIR}/bundles.txt"
+      grep -vP 'address|building|venue|constituency|intersection' > "${DIR}/bundles.txt"
 
 # Load bundles list into array
 readarray -t BUNDLES < "${DIR}/bundles.txt"
@@ -64,6 +64,9 @@ function build(){
     docker run --rm -e "DB=/out/${1}.sqlite" -v "${DB_DIR}:/out" 'missinglink/wof-spatialite' sql 'UPDATE geometry_columns_time SET last_insert="0000-01-01T00:00:00.000Z"'
     docker run --rm -e "DB=/out/${1}.sqlite" -v "${DB_DIR}:/out" 'missinglink/wof-spatialite' sql 'UPDATE geometry_columns_time SET last_update="0000-01-01T00:00:00.000Z"'
     docker run --rm -e "DB=/out/${1}.sqlite" -v "${DB_DIR}:/out" 'missinglink/wof-spatialite' sql 'UPDATE geometry_columns_time SET last_delete="0000-01-01T00:00:00.000Z"'
+
+    # remove empty databases
+    docker run --rm -v "${DB_DIR}:/out" 'ubuntu:16.04' find "/out/${1}.sqlite" -maxdepth 1 -size -5615617c -delete
 
     echo '-- remove processed files --'
     docker run --rm -v "${BUNDLE_DIR}:/in" 'ubuntu:16.04' rm -rf "/in/${1}"
