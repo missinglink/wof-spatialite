@@ -39,6 +39,7 @@ var wof_order = [
   "county",
   "localadmin",
   "locality",
+  "postalcode",
   "borough",
   "macrohood",
   "neighbourhood",
