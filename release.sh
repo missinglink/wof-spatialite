@@ -2,7 +2,7 @@
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd );
 
 # tessellation options
-LEVEL=50
+LEVEL=30
 COMPLEXITY=100
 
 # bundle dir
@@ -65,8 +65,8 @@ function build(){
     docker run --rm -e "DB=/out/${1}.sqlite" -v "${DB_DIR}:/out" 'missinglink/wof-spatialite' sql 'UPDATE geometry_columns_time SET last_update="0000-01-01T00:00:00.000Z"'
     docker run --rm -e "DB=/out/${1}.sqlite" -v "${DB_DIR}:/out" 'missinglink/wof-spatialite' sql 'UPDATE geometry_columns_time SET last_delete="0000-01-01T00:00:00.000Z"'
 
-    # remove empty databases
-    docker run --rm -v "${DB_DIR}:/out" 'ubuntu:16.04' find "/out/${1}.sqlite" -maxdepth 1 -size -5615617c -delete
+    echo '-- remove empty databases --'
+    docker run --rm -e "DB=/out/${1}.sqlite" -v "${DB_DIR}:/out" --entrypoint '/bin/bash' -e 'SQL=SELECT COUNT(*) FROM place' 'missinglink/wof-spatialite' -c 'if [[ $(sqlite3 ${DB} "${SQL}") -eq 0 ]]; then rm ${DB}; fi'
 
     echo '-- remove processed files --'
     docker run --rm -v "${BUNDLE_DIR}:/in" 'ubuntu:16.04' rm -rf "/in/${1}"
@@ -83,8 +83,10 @@ wait
 if [ ! -f "${DB_DIR}/wof.sqlite" ]; then
   docker run --rm -e "DB=/out/wof.sqlite" -v "${DB_DIR}:/out" 'missinglink/wof-spatialite' init
   for BUNDLE_NAME in "${BUNDLES[@]}"; do
-    echo "----- merge ${BUNDLE_NAME} -----"
-    docker run --rm -e "DB=/out/wof.sqlite" -v "${DB_DIR}:/out" 'missinglink/wof-spatialite' merge "/out/${BUNDLE_NAME}.sqlite"
+    if [ -f "${DB_DIR}/${BUNDLE_NAME}.sqlite" ]; then
+      echo "----- merge ${BUNDLE_NAME} -----"
+      docker run --rm -e "DB=/out/wof.sqlite" -v "${DB_DIR}:/out" 'missinglink/wof-spatialite' merge "/out/${BUNDLE_NAME}.sqlite"
+    fi
   done
 fi
 
