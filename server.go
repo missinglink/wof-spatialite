@@ -9,9 +9,18 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"sync"
 
 	_ "github.com/shaxbee/go-spatialite" // required database driver
 )
+
+// total requests to queue at any time
+var queue = make(chan *query, 1024)
+
+type connection struct {
+	DB   *sql.DB
+	Stmt *sql.Stmt
+}
 
 type result struct {
 	ID        uint64 `json:"id"`
@@ -19,7 +28,14 @@ type result struct {
 	Placetype string `json:"placetype"`
 }
 
-var db = func() *sql.DB {
+type query struct {
+	Send func(res []*result)
+	Lon  sql.NamedArg
+	Lat  sql.NamedArg
+}
+
+// newConnection - constructor
+func newConnection() *connection {
 
 	var dbFile = "wof.sqlite"
 	if len(os.Args) > 1 {
@@ -32,19 +48,7 @@ var db = func() *sql.DB {
 		panic(err)
 	}
 
-	_db.SetMaxOpenConns(1)
-
-	// enable mmap
-	_db.Exec("PRAGMA mmap_size=268435456")
-	_db.Exec("PRAGMA page_size=65536")
-	_db.Exec("PRAGMA temp_store=MEMORY")
-	_db.Exec("PRAGMA locking_mode=EXCLUSIVE")
-	return _db
-}()
-
-var query = func() *sql.Stmt {
-
-	var sql = strings.TrimSpace(`
+	_stmt, err := _db.Prepare(strings.TrimSpace(`
 SELECT id, name, layer FROM place
 WHERE id IN (
   SELECT wofid
@@ -54,15 +58,16 @@ WHERE id IN (
     WHERE pkid MATCH RTreeIntersects(:lon, :lat, :lon, :lat)
   )
   AND WITHIN( ST_Point(:lon, :lat), tiles.geom )
-)`)
-
-	_query, err := db.Prepare(sql)
+)`))
 	if err != nil {
 		panic(err)
 	}
 
-	return _query
-}()
+	return &connection{
+		DB:   _db,
+		Stmt: _stmt,
+	}
+}
 
 // parseFloat - convert form
 func parseFloat(m map[string][]string, k string) float64 {
@@ -77,39 +82,66 @@ func parseFloat(m map[string][]string, k string) float64 {
 }
 
 func pip(w http.ResponseWriter, r *http.Request) {
-	r.ParseForm()
 
+	r.ParseForm()
 	var lon = sql.Named("lon", parseFloat(r.Form, "lon"))
 	var lat = sql.Named("lat", parseFloat(r.Form, "lat"))
 
+	var wg = &sync.WaitGroup{}
+	wg.Add(1)
+
+	var cb = func(res []*result) {
+		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+		w.Header().Set("Cache-Control", "public, max-age=120")
+		json, err := json.Marshal(res)
+		if err != nil {
+			panic(err)
+		}
+		w.Write(json)
+		wg.Done()
+	}
+
+	queue <- &query{Send: cb, Lon: lon, Lat: lat}
+	wg.Wait()
+}
+
+func lookup(c *connection, q *query) {
+
 	// start := time.Now()
-	rows, err := query.Query(lon, lat)
-	defer rows.Close()
+	rows, err := c.Stmt.Query(q.Lon, q.Lat)
 	if err != nil {
 		log.Println(err)
 	}
 	// elapsed := time.Since(start)
 	// fmt.Printf("took %s\n", elapsed)
 
-	var res []result
-	var id uint64
-	var name, layer string
+	var res = make([]*result, 0, 20)
 	for rows.Next() {
-		rows.Scan(&id, &name, &layer)
-		res = append(res, result{ID: id, Name: name, Placetype: layer})
+		var r = &result{}
+		rows.Scan(&r.ID, &r.Name, &r.Placetype)
+		res = append(res, r)
 	}
+	rows.Close()
 
-	jsonValue, err := json.Marshal(res)
-	if err != nil {
-		panic(err)
+	q.Send(res)
+}
+
+func worker() {
+	var c = newConnection()
+	for q := range queue {
+		lookup(c, q)
 	}
-
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.Header().Set("Cache-Control", "public, max-age=120")
-	w.Write(jsonValue)
+	c.Stmt.Close()
+	c.DB.Close()
 }
 
 func main() {
+
+	// spawn worker(s)
+	for i := 0; i < 1; i++ {
+		go worker()
+	}
+
 	fs := http.FileServer(http.Dir("demo"))
 	http.Handle("/demo/", http.StripPrefix("/demo/", fs))
 	http.HandleFunc("/pip", pip)
