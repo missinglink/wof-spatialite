@@ -365,8 +365,10 @@ function bundle_download {
   BUNDLE="wof-${1}-latest-bundle"; COMPRESSED="${BUNDLE}.tar.bz2";
   echo "download ${COMPRESSED}";
   [ -d "${2}" ] || mkdir -p "${2}"
-  curl -s "https://whosonfirst.mapzen.com/bundles/${COMPRESSED}" |\
-    tar -xj --strip-components='1' --exclude='README.txt' -C "${2}";
+  curl -so "/tmp/${COMPRESSED}" "https://whosonfirst.mapzen.com/bundles/${COMPRESSED}"
+  ls -lah "/tmp/${COMPRESSED}"
+  tar -xj --strip-components='1' --exclude='README.txt' -C "${2}" -f "/tmp/${COMPRESSED}"
+  rm "/tmp/${COMPRESSED}"
 }
 
 ## ogr_simplify - use ogr2ogr to simplify geometry
