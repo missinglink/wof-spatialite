@@ -143,6 +143,7 @@ func main() {
 	}
 
 	fs := http.FileServer(http.Dir("demo"))
+	http.Handle("/", fs)
 	http.Handle("/demo/", http.StripPrefix("/demo/", fs))
 	http.HandleFunc("/pip", pip)
 	fmt.Println("listening on port 8080")
