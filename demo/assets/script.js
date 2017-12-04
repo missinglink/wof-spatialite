@@ -14,14 +14,21 @@ L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
 }).addTo(map);
 
-// init
-map.setView([40.7259, -73.9805], 12);
+// init location
+var hash = new L.Hash(map);
+if( 'string' !== typeof location.hash || location.hash.split('/').length !== 3 ){
+
+  // on error, set NYC
+  map.on('locationerror', function(){ map.setView([40.7259, -73.9805], 12); });
+
+  // try to locate using browser geolocation API
+  map.locate({ setView: true, maxZoom: 16 });
+}
 
 // Add geocoding plugin
 var params = { };
 var options = { focus: false, expanded: true, params: params };
 var geocoder = L.control.geocoder('search-S0p1Seg', options).addTo(map);
-map.locate({setView: true, maxZoom: 16});
 
 var wof_order = [
   "planet",
