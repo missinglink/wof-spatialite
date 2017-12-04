@@ -48,8 +48,15 @@ var wof_order = [
 ];
 
 function update( latlng ){
+
   // use map center when latlng not supplied
-  if( !latlng ){ latlng = map.getCenter(); }
+  if( !latlng ){
+    latlng = map.getCenter();
+  }
+
+  // unwrap longitude
+  while( latlng.lng > +180 ){ latlng.lng -= 360; }
+  while( latlng.lng < -180 ){ latlng.lng += 360; }
 
   $.ajax({
     dataType: "json",
