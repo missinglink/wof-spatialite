@@ -8,9 +8,9 @@ new L.Control.Zoom({ position: 'bottomleft' }).addTo(map);
 // map.on('dragend', function(e){ update(); });
 map.on('moveend', function(e){ update(); });
 map.on('resize', function(e){ update(); });
-map.on('load', function(e){ update(); });
+// map.on('load', function(e){ update(); });
 
-L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
 }).addTo(map);
 
