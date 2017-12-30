@@ -10,10 +10,13 @@ TODAY=`date +%Y-%m-%d`
 DB_DIR="/data/build/${TODAY}"
 BUNDLE_DIR="${DB_DIR}/bundles"
 
+# BUNDLE_HOST='https://whosonfirst.mapzen.com/bundles'
+BUNDLE_HOST='http://missinglink.mapzen.s3.amazonaws.com/whosonfirst.mapzen.com/bundles'
+
 # create a bundle index file if one doesn't already exist
 [ -f "${DIR}/bundles.txt" ] ||\
-  curl -s 'https://whosonfirst.mapzen.com/bundles/index.txt' |\
-    grep -Po 'wof-\K(.*)(?=-latest-bundle\.tar\.bz)' |\
+  curl -s "${BUNDLE_HOST}/index.txt" |\
+    grep -Po 'wof-\K(.*)(?=-latest-bundle\.tar\.bz2)' |\
       grep -vP 'address|building|venue|constituency|intersection' > "${DIR}/bundles.txt"
 
 # Load bundles list into array
@@ -32,7 +35,7 @@ function build(){
     mkdir -p "${BUNDLE_DIR}/${1}"
 
     echo '-- download bundle --'
-    docker run --rm -v "${BUNDLE_DIR}/${1}:/in" 'missinglink/wof-spatialite' bundle_download "${1}" /in
+    docker run --rm -v "${BUNDLE_DIR}/${1}:/in" -e "BUNDLE_HOST=${BUNDLE_HOST}" 'missinglink/wof-spatialite' bundle_download "${1}" /in
 
     echo '-- remove empty (point) geometries'
     docker run --rm -v "${BUNDLE_DIR}/${1}:/in" 'missinglink/wof-spatialite' remove_point_geoms /in

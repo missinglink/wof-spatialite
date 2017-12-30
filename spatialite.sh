@@ -362,10 +362,11 @@ SQL
 ## $1: bundle name: eg. 'country'
 ## $2: output dir: eg. '/out/country'
 function bundle_download {
+  BUNDLE_HOST=${BUNDLE_HOST:-'https://whosonfirst.mapzen.com/bundles'};
   BUNDLE="wof-${1}-latest-bundle"; COMPRESSED="${BUNDLE}.tar.bz2";
   echo "download ${COMPRESSED}";
   [ -d "${2}" ] || mkdir -p "${2}"
-  curl -so "/tmp/${COMPRESSED}" "https://whosonfirst.mapzen.com/bundles/${COMPRESSED}"
+  curl -so "/tmp/${COMPRESSED}" "${BUNDLE_HOST}/${COMPRESSED}"
   ls -lah "/tmp/${COMPRESSED}"
   tar -xj --strip-components='1' --exclude='README.txt' -C "${2}" -f "/tmp/${COMPRESSED}"
   rm "/tmp/${COMPRESSED}"
