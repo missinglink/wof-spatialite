@@ -26,9 +26,15 @@ if( 'string' !== typeof location.hash || location.hash.split('/').length !== 3 )
 }
 
 // Add geocoding plugin
-var params = { };
-var options = { focus: false, expanded: true, params: params };
-var geocoder = L.control.geocoder('search-S0p1Seg', options).addTo(map);
+var params = {};
+var options = {
+  focus: false,
+  expanded: true,
+  params: params,
+  url: 'https://api.geocode.earth/v1',
+  attribution: 'Geocoding by <a href="https://geocode.earth/">geocode.earth</a>'
+};
+var geocoder = L.control.geocoder('ge-6361345754ea1287', options).addTo(map);
 
 var wof_order = [
   "planet",
@@ -86,7 +92,7 @@ function update( latlng ){
         html.push("<th>" + place.placetype + "</th>");
         html.push("<td>" + place.name + "</td>");
         html.push("<td class=\"wof\">");
-        html.push("<a target=\"wof\" href=\"https://whosonfirst.mapzen.com/spelunker/id/" + place.id + "\">" + place.id + "</a>");
+        html.push("<a target=\"wof\" href=\"https://spelunker.whosonfirst.org/id/" + place.id + "\">" + place.id + "</a>");
         html.push("</td>");
         html.push("</tr>");
       });
