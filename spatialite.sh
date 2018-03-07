@@ -340,6 +340,9 @@ AND (
 SQL
 }
 
+## server - start the HTTP server
+## $1: db name: eg. 'wof.sqlite'
+
 # copy all records enveloping point
 # time sqlite3 --init 'init.sql' $"$OUTDIR/wof.sqlite3" <<SQL
 # .timer on

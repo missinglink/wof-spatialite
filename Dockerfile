@@ -21,12 +21,16 @@ WORKDIR /usr/src/repos/wof-spatialite
 
 # install golang
 ENV GOPATH=/usr/src/.go
-RUN wget -qO- https://redirector.gvt1.com/edgedl/go/go1.9.2.linux-amd64.tar.gz | tar -C /usr/local -xzf -
+RUN wget -qO- https://dl.google.com/go/go1.10.linux-amd64.tar.gz | tar -C /usr/local -xzf -
 RUN mkdir -p "${GOPATH}"
 ENV PATH="${PATH}:/usr/local/go/bin:${GOPATH}/bin"
 
 # golang modules
 RUN go get github.com/shaxbee/go-spatialite
+RUN go get github.com/mattn/go-sqlite3
+
+# the go-sqlite3 package is broken on newer versions
+RUN git -C "${GOPATH}/src/github.com/mattn/go-sqlite3" checkout '534c0213e2a3a8fd494c92a86fa6bb9ac3737269'
 
 # set up server
 COPY ./server.go /usr/src/repos/wof-spatialite
