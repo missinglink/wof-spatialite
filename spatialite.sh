@@ -412,6 +412,23 @@ function remove_point_geoms(){
       xargs --no-run-if-empty rm
 }
 
+## jsonlines - generate a jsonl extract of the place table
+function jsonlines(){
+  sqlite3 --init 'init.sql' ${DB} <<SQL
+SELECT json_object(
+  'id', place.id,
+  'type', 'Feature',
+  'properties', json_object(
+    'wof:id', place.id,
+    'wof:placetype', place.layer,
+    'wof:name', place.name
+  ),
+  'geometry', json(AsGeoJson(geom))
+)
+FROM place;
+SQL
+}
+
 # cli runner
 case "$1" in
 'init') init;;
@@ -436,6 +453,7 @@ case "$1" in
 'ogr_simplify') ogr_simplify "$2" "$3";;
 'ogr_simplify_dir') ogr_simplify_dir "$2" "$3";;
 'remove_point_geoms') remove_point_geoms "$2";;
+'jsonlines') jsonlines;;
 *)
   BR='-------------------------------------------------------------------------'
   printf "%s\n" $BR
