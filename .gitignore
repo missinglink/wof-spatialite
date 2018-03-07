@@ -1,3 +1,4 @@
 bundles.txt
 server
 *.sqlite
+*.db

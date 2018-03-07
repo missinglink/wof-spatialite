@@ -1,3 +1,4 @@
-*.db
-*.sqlite
+bundles.txt
 server
+*.sqlite
+*.db
