@@ -96,6 +96,9 @@ fi
 echo '-- remove bundle dir --'
 rm -rf "${BUNDLE_DIR}"
 
+echo '-- generate jsonl export --'
+docker run --rm -e 'DB=/out/wof.sqlite' -v "${DB_DIR}:/out" 'missinglink/wof-spatialite' jsonlines | gzip > "${DB_DIR}/wof.polys.jsonl.gz"
+
 # compress all databases
 if type pigz >/dev/null
   then find "${DB_DIR}" -type f -name '*.sqlite' | xargs pigz -n -T --best
@@ -103,16 +106,13 @@ if type pigz >/dev/null
 fi
 
 # upload to s3 (only if over 2GB)
-find "${DB_DIR}/wof.sqlite.gz" -maxdepth 1 -size 2G | while read file; do
+find "${DB_DIR}/wof.sqlite.gz" -maxdepth 1 -size +2G | while read file; do
   echo "----- upload wof.sqlite.gz to s3 -----"
   aws s3 cp "${file}" s3://missinglink.geo/ --acl public-read
 done
 
-# generate jsonl export
-docker run --rm -e "DB=/out/${1}.sqlite" -v "${DB_DIR}:/out" 'missinglink/wof-spatialite' jsonlines | gzip > "${DB_DIR}/wof.polys.jsonl.gz"
-
-# upload to s3 (only if over 500M)
-find "${DB_DIR}/wof.polys.jsonl.gz" -maxdepth 1 -size 500M | while read file; do
+# upload to s3 (only if over 800M)
+find "${DB_DIR}/wof.polys.jsonl.gz" -maxdepth 1 -size +800M | while read file; do
   echo "----- upload wof.polys.jsonl.gz to s3 -----"
   aws s3 cp "${file}" s3://missinglink.geo/ --acl public-read
 done
