@@ -10,8 +10,8 @@ TODAY=`date +%Y-%m-%d`
 DB_DIR="/data/build/${TODAY}"
 BUNDLE_DIR="${DB_DIR}/bundles"
 
-# BUNDLE_HOST='https://whosonfirst.mapzen.com/bundles'
-BUNDLE_HOST='http://missinglink.mapzen.s3.amazonaws.com/whosonfirst.mapzen.com/bundles'
+BUNDLE_HOST='https://dist.whosonfirst.org/bundles'
+# BUNDLE_HOST='http://missinglink.mapzen.s3.amazonaws.com/whosonfirst.mapzen.com/bundles'
 
 # create a bundle index file if one doesn't already exist
 [ -f "${DIR}/bundles.txt" ] ||\
