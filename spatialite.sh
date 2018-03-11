@@ -1,13 +1,14 @@
 #!/bin/bash
 # set -e;
 export LC_ALL=en_US.UTF-8;
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd );
 
 # location of sqlite database file
 DB=${DB:-"wof.sqlite"};
 
 ## init - set up a new database
 function init(){
-  sqlite3 --init 'init.sql' ${DB} <<SQL
+  sqlite3 --init "${DIR}/init.sql" ${DB} <<SQL
 .output /dev/null
 SELECT InitSpatialMetaData(1);
 .output stdout
@@ -52,7 +53,7 @@ chmod 0666 "$DB";
 ## merge - merge tables from an external database in to the main db
 ## $1: external db path: eg. '/tmp/external.sqlite'
 function merge(){
-  sqlite3 --init 'init.sql' ${DB} <<SQL
+  sqlite3 --init "${DIR}/init.sql" ${DB} <<SQL
 ATTACH DATABASE '$1' AS ext;
 INSERT INTO main.place( id, name, layer, geom ) SELECT id, name, layer, geom FROM ext.place;
 INSERT INTO main.properties( place_id, blob ) SELECT place_id, blob FROM ext.properties;
@@ -65,7 +66,7 @@ SQL
 ## $1: geojson path: eg. '/tmp/test.geojson'
 ## $2: property to extract: eg. '$.geometry'
 function json(){
-  sqlite3 --init 'init.sql' ${DB} <<SQL
+  sqlite3 --init "${DIR}/init.sql" ${DB} <<SQL
 WITH file AS ( SELECT readfile('$1') as json )
 SELECT json_extract(( SELECT json FROM file ), '$2' );
 SQL
@@ -74,14 +75,14 @@ SQL
 ## sql - run an arbitrary sql script
 ## $1: sql: eg. 'VACUUM'
 function sql(){
-  echo "${1};" | sqlite3 --init 'init.sql' ${DB}
+  echo "${1};" | sqlite3 --init "${DIR}/init.sql" ${DB}
 }
 
 ## index - add a geojson polygon to the database
 ## $1: geojson path: eg. '/tmp/test.geojson'
 function index(){
   echo $1;
-  sqlite3 --init 'init.sql' ${DB} <<SQL
+  sqlite3 --init "${DIR}/init.sql" ${DB} <<SQL
 BEGIN;
 
 CREATE TEMP TABLE file ( json TEXT );
@@ -120,7 +121,7 @@ function index_all(){
 
 ## fixify - fix broken geometries
 function fixify(){
-  sqlite3 --init 'init.sql' ${DB} <<SQL
+  sqlite3 --init "${DIR}/init.sql" ${DB} <<SQL
 UPDATE place SET geom = MakeValid( geom );
 SQL
 }
@@ -128,14 +129,14 @@ SQL
 ## simplify - perform Douglas-Peuker simplification on all polygons
 ## $1: tolerance: eg. '0.1'
 function simplify(){
-  sqlite3 --init 'init.sql' ${DB} <<SQL
+  sqlite3 --init "${DIR}/init.sql" ${DB} <<SQL
 UPDATE place SET geom = SimplifyPreserveTopology( geom, $1 );
 SQL
 }
 
 ## tile_init - copy records from the place table to the tiles table
 function tile_init(){
-  sqlite3 --init 'init.sql' ${DB} <<SQL
+  sqlite3 --init "${DIR}/init.sql" ${DB} <<SQL
 SELECT 'Initial Load';
 INSERT INTO tiles (id, wofid, level, geom)
   SELECT NULL, id, 0, CastToMultiPolygon(geom) FROM place;
@@ -150,7 +151,7 @@ SQL
 ## $1: level - level to target: eg. '0'
 ## $2: complexity - maximum number of points allowed per level: eg. '200'
 function tile(){
-  sqlite3 --init 'init.sql' ${DB} <<SQL
+  sqlite3 --init "${DIR}/init.sql" ${DB} <<SQL
 SELECT
   printf('Level $1 (%d/%d)',
   (SELECT COUNT(*) FROM tiles WHERE level = $1 AND complexity > $2),
@@ -233,7 +234,7 @@ function tile_all(){
 ## $1: longitude: eg. '151.5942043'
 ## $2: latitude: eg. '-33.013441'
 function pip(){
-  sqlite3 --init 'init.sql' ${DB} <<SQL
+  sqlite3 --init "${DIR}/init.sql" ${DB} <<SQL
 .timer on
 
 SELECT * FROM place
@@ -245,7 +246,7 @@ SQL
 ## $1: longitude: eg. '151.5942043'
 ## $2: latitude: eg. '-33.013441'
 function pipfast(){
-  sqlite3 --init 'init.sql' ${DB} <<SQL
+  sqlite3 --init "${DIR}/init.sql" ${DB} <<SQL
 .timer on
 
 SELECT * FROM place
@@ -261,7 +262,7 @@ SQL
 ## $1: longitude: eg. '151.5942043'
 ## $2: latitude: eg. '-33.013441'
 function piptile(){
-  sqlite3 --init 'init.sql' ${DB} <<SQL
+  sqlite3 --init "${DIR}/init.sql" ${DB} <<SQL
 .timer on
 
 SELECT * FROM place
@@ -280,7 +281,7 @@ SQL
 ## contains - find all child polygons contained by: $1
 ## $1: id: eg. '2316741'
 function contains(){
-  sqlite3 --init 'init.sql' ${DB} <<SQL
+  sqlite3 --init "${DIR}/init.sql" ${DB} <<SQL
 SELECT * FROM place
 WHERE id IN (
   SELECT pkid FROM idx_place_geom
@@ -297,7 +298,7 @@ SQL
 ## within - find all parent polygons containing id: $1
 ## $1: id: eg. '2316741'
 function within(){
-  sqlite3 --init 'init.sql' ${DB} <<SQL
+  sqlite3 --init "${DIR}/init.sql" ${DB} <<SQL
 SELECT * FROM place
 WHERE id IN (
   SELECT pkid FROM idx_place_geom
@@ -322,7 +323,7 @@ function extract(){
 
   init; # init new db
 
-  sqlite3 ${MAINDB} <<SQL
+  sqlite3 --init "${DIR}/init.sql" ${MAINDB} <<SQL
 ATTACH DATABASE '$1' AS 'extract';
 WITH base AS ( SELECT * FROM place JOIN idx_place_geom ON place.id = idx_place_geom.pkid WHERE place.id=$2 )
 INSERT INTO extract.place SELECT * FROM main.place
@@ -344,7 +345,7 @@ SQL
 ## $1: db name: eg. 'wof.sqlite'
 
 # copy all records enveloping point
-# time sqlite3 --init 'init.sql' $"$OUTDIR/wof.sqlite3" <<SQL
+# time sqlite3 --init "${DIR}/init.sql" $"$OUTDIR/wof.sqlite3" <<SQL
 # .timer on
 #
 # ATTACH DATABASE '/media/flash/wof.sqlite3.backup' as 'source';
@@ -414,7 +415,7 @@ function remove_point_geoms(){
 
 ## jsonlines - generate a jsonl extract of the place table
 function jsonlines(){
-  sqlite3 --init 'init.sql' ${DB} <<SQL
+  sqlite3 --init "${DIR}/init.sql" ${DB} <<SQL
 SELECT json_object(
   'id', place.id,
   'type', 'Feature',
