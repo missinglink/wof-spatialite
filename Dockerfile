@@ -1,7 +1,7 @@
 # base image
 FROM missinglink/gis
 ENV DEBIAN_FRONTEND noninteractive
-ENV LD_LIBRARY_PATH=/lib:/usr/lib:/usr/local/lib;
+ENV LD_LIBRARY_PATH=/lib:/usr/lib:/usr/local/lib
 
 # dependencies
 RUN apt-get update && apt-get install --no-install-recommends -y parallel jq curl && rm -rf /var/lib/apt/lists/*
